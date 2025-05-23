@@ -94,7 +94,7 @@
         @forelse ($users as $user)
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {{ $user->id }}
+                    {{ $user->user_id }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{ $user->id_card }}
