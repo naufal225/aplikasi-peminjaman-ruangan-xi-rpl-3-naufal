@@ -162,20 +162,22 @@
                 </div>
             @endforelse
         </div>
-        
+
         <!-- View All Button -->
+        @if($recentActivities->count > 0)
         <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 transition-colors duration-200">
             <a href="{{ route('peminjaman-pengembalian.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors duration-200">
                 Lihat Semua Aktivitas →
             </a>
         </div>
+        @endif
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Pass PHP data to JavaScript
         const chartData = @json($chartData);
-        
+
         class DashboardChart {
             constructor() {
                 this.chart = null;
@@ -241,7 +243,7 @@
                 let pengajuanPengembalian = this.chartData.pengajuanPengembalian;
                 let peminjaman = this.chartData.peminjaman;
                 let pengembalian = this.chartData.pengembalian;
-                
+
                 // If we're showing only 7 days, take the last 7 days
                 if (this.currentPeriod === 7) {
                     dates = dates.slice(-7);
@@ -250,7 +252,7 @@
                     peminjaman = peminjaman.slice(-7);
                     pengembalian = pengembalian.slice(-7);
                 }
-                
+
                 return {
                     dates,
                     pengajuanPeminjaman,
@@ -438,21 +440,21 @@
             updateChartTheme() {
                 if (this.chart) {
                     const colors = this.getChartColors();
-                    
+
                     // Update legend colors
                     this.chart.options.plugins.legend.labels.color = colors.textColor;
-                    
+
                     // Update tooltip colors
                     this.chart.options.plugins.tooltip.backgroundColor = document.documentElement.classList.contains('dark') ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)';
                     this.chart.options.plugins.tooltip.titleColor = colors.textColor;
                     this.chart.options.plugins.tooltip.bodyColor = colors.textColor;
                     this.chart.options.plugins.tooltip.borderColor = colors.gridColor;
-                    
+
                     // Update scale colors
                     this.chart.options.scales.x.ticks.color = colors.textColor;
                     this.chart.options.scales.y.ticks.color = colors.textColor;
                     this.chart.options.scales.y.grid.color = colors.gridColor;
-                    
+
                     // Update dataset colors
                     this.chart.data.datasets.forEach((dataset, index) => {
                         const datasetKeys = ['pengajuanPeminjaman', 'pengajuanPengembalian', 'peminjaman', 'pengembalian'];
@@ -462,7 +464,7 @@
                             dataset.borderColor = colors.datasets[key].borderColor;
                         }
                     });
-                    
+
                     this.chart.update();
                 }
             }
