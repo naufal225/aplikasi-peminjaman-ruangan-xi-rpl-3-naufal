@@ -25,4 +25,8 @@ class PeminjamanRuangan extends Model
     {
         return $this->belongsTo(Ruangan::class, 'ruangan_id', 'ruangan_id');
     }
+
+    public function pengajuan_pengembalian() {
+        return $this->hasMany(PengajuanPengembalian::class, 'peminjaman_id');
+    }
 }

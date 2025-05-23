@@ -24,8 +24,12 @@ class User extends Authenticatable
 
     protected $hidden = ['password'];
 
-    public function peminjamanRuangan()
+    public function peminjaman_ruangan()
     {
         return $this->hasMany(PeminjamanRuangan::class, 'user_id', 'user_id');
+    }
+
+    public function pengajuan_pengembalian() {
+        return $this->hasMany(PengajuanPengembalian::class, 'pengajuan_pengembalian_id');
     }
 }

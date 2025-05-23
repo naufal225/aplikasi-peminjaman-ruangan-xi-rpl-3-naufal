@@ -15,8 +15,13 @@ class Ruangan extends Model
         'nama_ruangan', 'lokasi', 'kapasitas',
     ];
 
-    public function peminjamanRuangan()
+    public function peminjaman_ruangan()
     {
         return $this->hasMany(PeminjamanRuangan::class, 'ruangan_id', 'ruangan_id');
+    }
+
+    public function pengajuan_pembalian()
+    {
+        return $this->hasMany(PengajuanPengembalian::class, 'pengajuan_pengembalian_id', 'pengajuan_pengembalian_id');
     }
 }
