@@ -14,11 +14,10 @@ use App\Http\Controllers\UserPeminjamanController;
 use App\Http\Controllers\UserPengembalianController;
 
 Route::get('/', function () {
+    
     if (!Auth::check()) {
-        return view("auth.login");
+        return redirect('login');
     }
-
-    dd(Auth::user()->role);
 
     if (Auth::user()->role == "admin") {
         return redirect()->route('dashboard');
@@ -39,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:admin'])->group(function () {
 
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
