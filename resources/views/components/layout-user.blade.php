@@ -105,7 +105,7 @@
                                 <div class="py-1">
                                     <div class="px-4 py-2 border-b border-gray-200">
                                         <p class="text-sm font-medium text-gray-900">{{ Auth::user()->nama_lengkap }}</p>
-                                        <p class="text-xs text-gray-500">{{ Auth::user()->jenis_pengguna }}</p>
+                                        <p class="text-xs text-gray-500">{{ Auth::user()->role }}</p>
                                     </div>
                                     <a href="#" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
