@@ -164,7 +164,7 @@
         </div>
 
         <!-- View All Button -->
-        @if($recentActivities->count > 0)
+        @if($recentActivities != null)
         <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 transition-colors duration-200">
             <a href="{{ route('peminjaman-pengembalian.index') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium transition-colors duration-200">
                 Lihat Semua Aktivitas →
