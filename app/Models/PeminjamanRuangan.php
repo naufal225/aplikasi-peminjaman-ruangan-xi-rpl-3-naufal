@@ -27,6 +27,6 @@ class PeminjamanRuangan extends Model
     }
 
     public function pengajuan_pengembalian() {
-        return $this->hasMany(PengajuanPengembalian::class, 'peminjaman_id');
+        return $this->hasMany(PengembalianRuangan::class, 'peminjaman_id');
     }
 }

@@ -1,37 +1,97 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeminjamanPengembalianController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Row;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\UserPeminjamanController;
+use App\Http\Controllers\UserPengembalianController;
 
 Route::get('/', function () {
-    return view('admin.dashboard.index');
+    if (!Auth::check()) {
+        return view("auth.login");
+    }
+
+    if (Auth::user()->role == "admin") {
+        return redirect()->route('dashboard');
+    }
+
+    if (Auth::user()->role == "user") {
+        return redirect()->route('user.dashboard');
+    }
 });
 
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/import', [UserController::class, 'importForm'])->name('users.import.form');
-Route::post('/users/import', [UserController::class, 'import'])->name('users.import');
+Route::get('/login', function () {
+    return view("auth.login");
+})->middleware('guest')->name('login');
 
-Route::get('/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
-Route::get('/ruangan/create', [RuanganController::class, 'create'])->name('ruangan.create');
-Route::post('/ruangan', [RuanganController::class, 'store'])->name('ruangan.store');
-Route::get('/ruangan/{ruangan}/edit', [RuanganController::class, 'edit'])->name('ruangan.edit');
-Route::put('/ruangan/{ruangan}', [RuanganController::class, 'update'])->name('ruangan.update');
-Route::delete('/ruangan/{ruangan}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
-Route::get('/ruangan/import', [RuanganController::class, 'importForm'])->name('ruangan.import.form');
-Route::post('/ruangan/import', [RuanganController::class, 'import'])->name('ruangan.import');
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::prefix('peminjaman-ruangan')->name('peminjaman-pengembalian.')->group(function () {
-    Route::get('/', [PeminjamanPengembalianController::class, 'index'])->name('index');
-    Route::get('/create', [PeminjamanPengembalianController::class, 'create'])->name('create');
-    Route::post('/', [PeminjamanPengembalianController::class, 'store'])->name('store');
-    Route::patch('/{id}/status', [PeminjamanPengembalianController::class, 'updateStatus'])->name('update-status');
-    Route::patch('/pengembalian/{id}/status', [PeminjamanPengembalianController::class, 'updatePengembalianStatus'])->name('update-pengembalian-status');
-    Route::post('/export', [PeminjamanPengembalianController::class, 'exportData'])->name('export');
+Route::middleware(['auth'])->group(function () {
+
+    Route::middleware(['role:admin'])->group(function () {
+
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/import', [UserController::class, 'importForm'])->name('users.import.form');
+        Route::post('/users/import', [UserController::class, 'import'])->name('users.import');
+
+        Route::get('/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
+        Route::get('/ruangan/create', [RuanganController::class, 'create'])->name('ruangan.create');
+        Route::post('/ruangan', [RuanganController::class, 'store'])->name('ruangan.store');
+        Route::get('/ruangan/{ruangan}/edit', [RuanganController::class, 'edit'])->name('ruangan.edit');
+        Route::put('/ruangan/{ruangan}', [RuanganController::class, 'update'])->name('ruangan.update');
+        Route::delete('/ruangan/{ruangan}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
+        Route::get('/ruangan/import', [RuanganController::class, 'importForm'])->name('ruangan.import.form');
+        Route::post('/ruangan/import', [RuanganController::class, 'import'])->name('ruangan.import');
+
+        Route::prefix('peminjaman-ruangan')->name('peminjaman-pengembalian.')->group(function () {
+            Route::get('/', [PeminjamanPengembalianController::class, 'index'])->name('index');
+            Route::get('/create', [PeminjamanPengembalianController::class, 'create'])->name('create');
+            Route::post('/', [PeminjamanPengembalianController::class, 'store'])->name('store');
+            Route::patch('/{id}/status', [PeminjamanPengembalianController::class, 'updateStatus'])->name('update-status');
+            Route::patch('/pengembalian/{id}/status', [PeminjamanPengembalianController::class, 'updatePengembalianStatus'])->name('update-pengembalian-status');
+            Route::post('/export', [PeminjamanPengembalianController::class, 'exportData'])->name('export');
+        });
+
+    });
+
+    // User Routes
+    Route::middleware(['role:user'])->group(function () {
+        // User Dashboard
+        Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+
+        // User Peminjaman Routes
+        Route::prefix('user/peminjaman')->name('user.peminjaman.')->group(function () {
+            Route::get('/', [UserPeminjamanController::class, 'index'])->name('index');
+            Route::get('/create', [UserPeminjamanController::class, 'create'])->name('create');
+            Route::post('/', [UserPeminjamanController::class, 'store'])->name('store');
+            Route::get('/{id}', [UserPeminjamanController::class, 'show'])->name('show');
+            Route::patch('/{id}/cancel', [UserPeminjamanController::class, 'cancel'])->name('cancel');
+            Route::get('/check-availability', [UserPeminjamanController::class, 'checkAvailability'])->name('check-availability');
+        });
+
+        // User Pengembalian Routes
+        Route::prefix('user/pengembalian')->name('user.pengembalian.')->group(function () {
+            Route::get('/', [UserPengembalianController::class, 'index'])->name('index');
+            Route::get('/create/{peminjamanId}', [UserPengembalianController::class, 'create'])->name('create');
+            Route::post('/', [UserPengembalianController::class, 'store'])->name('store');
+            Route::get('/{id}', [UserPengembalianController::class, 'show'])->name('show');
+        });
+    });
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 });

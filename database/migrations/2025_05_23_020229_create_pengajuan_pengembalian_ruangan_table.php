@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajuan_pengembalian_ruangan', function (Blueprint $table) {
-            $table->id('pengajuan_pengembalian_id');
+        Schema::create('pengembalian_ruangan', function (Blueprint $table) {
+            $table->id('pengembalian_id');
             $table->foreignId("peminjaman_id")->constrained('peminjaman_ruangan', 'peminjaman_id');
             $table->foreignId('user_id')->constained('users');
+            $table->enum('kondisi_ruangan', ['baik','kotor','rusak_ringan','rusak_sedang','rusak_berat']);
             $table->enum('status', ['belum_disetujui', 'disetujui'])->default('belum_disetujui');
             $table->dateTime('tanggal_pengajuan');
             $table->dateTime('tanggal_disetujui')->nullable();
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pengajuan_pengembalian_ruangan');
+        Schema::dropIfExists('pengembalian_ruangan');
     }
 };

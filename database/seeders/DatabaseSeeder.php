@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
 
         User::factory(20)->create();
         Ruangan::factory(15)->create();
-        PeminjamanRuangan::factory(40)->create();
+        // PeminjamanRuangan::factory(40)->create();
     }
 }

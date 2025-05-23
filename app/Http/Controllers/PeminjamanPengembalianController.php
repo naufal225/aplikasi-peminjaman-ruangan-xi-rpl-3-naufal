@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PeminjamanRuangan;
 use App\Models\PengajuanPengembalian;
+use App\Models\PengembalianRuangan;
 use App\Models\Ruangan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class PeminjamanPengembalianController extends Controller
                 return view('admin.peminjaman-pengembalian.peminjaman-table', compact('data', 'sort', 'direction', 'status'));
             }
         } else {
-            $query = PengajuanPengembalian::with(['peminjaman', 'user', 'peminjaman.ruangan']);
+            $query = PengembalianRuangan::with(['peminjaman', 'user', 'peminjaman.ruangan']);
             
             if (!empty($search)) {
                 $query->where(function($q) use ($search) {
@@ -146,7 +147,7 @@ class PeminjamanPengembalianController extends Controller
             'status' => 'required|in:belum_disetujui,disetujui',
         ]);
         
-        $pengembalian = PengajuanPengembalian::findOrFail($id);
+        $pengembalian = PengembalianRuangan::findOrFail($id);
         $pengembalian->status = $request->status;
         
         if ($request->status === 'disetujui') {

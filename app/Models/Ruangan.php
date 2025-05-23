@@ -22,6 +22,6 @@ class Ruangan extends Model
 
     public function pengajuan_pembalian()
     {
-        return $this->hasMany(PengajuanPengembalian::class, 'pengajuan_pengembalian_id', 'pengajuan_pengembalian_id');
+        return $this->hasMany(PengembalianRuangan::class, 'pengajuan_pengembalian_id', 'pengajuan_pengembalian_id');
     }
 }

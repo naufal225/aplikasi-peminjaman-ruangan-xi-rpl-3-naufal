@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('nama_ruangan');
             $table->string('lokasi');
             $table->integer('kapasitas');
+            $table->enum('status', ['tersedia', 'tidak_tersedia'])->default('tersedia');
             $table->timestamps();
         });
     }

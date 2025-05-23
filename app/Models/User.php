@@ -30,6 +30,6 @@ class User extends Authenticatable
     }
 
     public function pengajuan_pengembalian() {
-        return $this->hasMany(PengajuanPengembalian::class, 'pengajuan_pengembalian_id');
+        return $this->hasMany(PengembalianRuangan::class, 'pengajuan_pengembalian_id');
     }
 }
