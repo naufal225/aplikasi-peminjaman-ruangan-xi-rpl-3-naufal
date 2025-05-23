@@ -18,6 +18,8 @@ Route::get('/', function () {
         return view("auth.login");
     }
 
+    dd(Auth::user()->role);
+
     if (Auth::user()->role == "admin") {
         return redirect()->route('dashboard');
     }
