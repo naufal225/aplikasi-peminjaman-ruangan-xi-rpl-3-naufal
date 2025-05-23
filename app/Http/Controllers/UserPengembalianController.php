@@ -21,32 +21,32 @@ class UserPengembalianController extends Controller
         $user = Auth::user();
         $status = $request->get('status', 'semua');
         $search = $request->get('search');
-        
+
         $query = PengembalianRuangan::with(['peminjaman.ruangan'])
-            ->whereHas('peminjaman', function($q) use ($user) {
+            ->whereHas('peminjaman', function ($q) use ($user) {
                 $q->where('user_id', $user->user_id);
             });
-        
+
         // Filter by status
         if ($status && $status !== 'semua') {
             $query->where('status', $status);
         }
-        
+
         // Search functionality
         if ($search) {
-            $query->whereHas('peminjaman.ruangan', function($q) use ($search) {
+            $query->whereHas('peminjaman.ruangan', function ($q) use ($search) {
                 $q->where('nama_ruangan', 'like', '%' . $search . '%')
-                  ->orWhere('lokasi', 'like', '%' . $search . '%');
+                    ->orWhere('lokasi', 'like', '%' . $search . '%');
             });
         }
-        
+
         $pengembalian = $query->orderBy('created_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
-        
+
         return view('user.pengembalian.index', compact('pengembalian', 'status', 'search'));
     }
-    
+
     /**
      * Show the form for creating a new return
      *
@@ -56,22 +56,22 @@ class UserPengembalianController extends Controller
     public function create($peminjamanId)
     {
         $user = Auth::user();
-        
+
         $peminjaman = PeminjamanRuangan::with('ruangan')
             ->where('user_id', $user->user_id)
             ->where('status', 'disetujui')
             ->findOrFail($peminjamanId);
-        
+
         // Check if return already exists
         $existingReturn = PengembalianRuangan::where('peminjaman_id', $peminjamanId)->first();
         if ($existingReturn) {
             return redirect()->route('user.pengembalian.index')
                 ->with('error', 'Pengembalian untuk peminjaman ini sudah pernah diajukan.');
         }
-        
+
         return view('user.pengembalian.create', compact('peminjaman'));
     }
-    
+
     /**
      * Store a newly created return
      *
@@ -86,22 +86,37 @@ class UserPengembalianController extends Controller
             'waktu_kembali' => 'required',
             'kondisi_ruangan' => 'required|in:baik,rusak_ringan,rusak_berat',
             'catatan' => 'nullable|string|max:500',
+        ], [
+            'peminjaman_id.required' => 'ID peminjaman harus diisi.',
+            'peminjaman_id.exists' => 'ID peminjaman tidak ditemukan dalam database.',
+
+            'tanggal_kembali.required' => 'Tanggal pengembalian harus diisi.',
+            'tanggal_kembali.date' => 'Format tanggal pengembalian tidak valid.',
+
+            'waktu_kembali.required' => 'Waktu pengembalian harus diisi.',
+
+            'kondisi_ruangan.required' => 'Kondisi ruangan harus dipilih.',
+            'kondisi_ruangan.in' => 'Kondisi ruangan harus salah satu dari: baik, rusak ringan, atau rusak berat.',
+
+            'catatan.string' => 'Catatan harus berupa teks.',
+            'catatan.max' => 'Catatan tidak boleh lebih dari 500 karakter.',
         ]);
-        
+
+
         $user = Auth::user();
-        
+
         // Verify the borrowing belongs to the user
         $peminjaman = PeminjamanRuangan::where('peminjaman_id', $request->peminjaman_id)
             ->where('user_id', $user->user_id)
             ->where('status', 'disetujui')
             ->firstOrFail();
-        
+
         // Check if return already exists
         $existingReturn = PengembalianRuangan::where('peminjaman_id', $request->peminjaman_id)->first();
         if ($existingReturn) {
             return back()->with('error', 'Pengembalian untuk peminjaman ini sudah pernah diajukan.');
         }
-        
+
         PengembalianRuangan::create([
             'peminjaman_id' => $request->peminjaman_id,
             'tanggal_kembali' => $request->tanggal_kembali,
@@ -110,11 +125,11 @@ class UserPengembalianController extends Controller
             'catatan' => $request->catatan,
             'status' => 'belum_disetujui',
         ]);
-        
+
         return redirect()->route('user.pengembalian.index')
             ->with('success', 'Pengajuan pengembalian berhasil disubmit. Menunggu persetujuan admin.');
     }
-    
+
     /**
      * Display the specified return
      *
@@ -124,13 +139,13 @@ class UserPengembalianController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        
+
         $pengembalian = PengembalianRuangan::with(['peminjaman.ruangan', 'peminjaman.user'])
-            ->whereHas('peminjaman', function($q) use ($user) {
+            ->whereHas('peminjaman', function ($q) use ($user) {
                 $q->where('user_id', $user->user_id);
             })
             ->findOrFail($id);
-        
+
         return view('user.pengembalian.show', compact('pengembalian'));
     }
 }

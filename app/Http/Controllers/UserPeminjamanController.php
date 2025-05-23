@@ -22,35 +22,35 @@ class UserPeminjamanController extends Controller
         $user = Auth::user();
         $status = $request->get('status', 'semua');
         $search = $request->get('search');
-        
+
         $query = PeminjamanRuangan::with(['ruangan'])
             ->where('user_id', $user->user_id);
-        
+
         // Filter by status
         if ($status && $status !== 'semua') {
             $query->where('status', $status);
         }
-        
+
         // Search functionality
         if ($search) {
-            $query->whereHas('ruangan', function($q) use ($search) {
+            $query->whereHas('ruangan', function ($q) use ($search) {
                 $q->where('nama_ruangan', 'like', '%' . $search . '%')
-                  ->orWhere('lokasi', 'like', '%' . $search . '%');
+                    ->orWhere('lokasi', 'like', '%' . $search . '%');
             });
         }
-        
+
         $peminjaman = $query->orderBy('created_at', 'desc')
             ->paginate(10)
             ->appends($request->query());
-        
+
         // If it's an AJAX request, return only the table content
         if ($request->ajax()) {
             return view('user.peminjaman.table', compact('peminjaman'))->render();
         }
-        
+
         return view('user.peminjaman.index', compact('peminjaman', 'status', 'search'));
     }
-    
+
     /**
      * Show the form for creating a new borrowing
      *
@@ -59,10 +59,10 @@ class UserPeminjamanController extends Controller
     public function create()
     {
         $ruangan = Ruangan::where('status', 'tersedia')->get();
-        
+
         return view('user.peminjaman.create', compact('ruangan'));
     }
-    
+
     /**
      * Store a newly created borrowing
      *
@@ -77,32 +77,51 @@ class UserPeminjamanController extends Controller
             'waktu_mulai' => 'required',
             'durasi_pinjam' => 'required|integer|min:1|max:24',
             'keperluan' => 'required|string|max:500',
+        ], [
+            'ruangan_id.required' => 'Ruangan harus dipilih.',
+            'ruangan_id.exists' => 'Ruangan yang dipilih tidak tersedia.',
+
+            'tanggal.required' => 'Tanggal peminjaman harus diisi.',
+            'tanggal.date' => 'Format tanggal tidak valid.',
+            'tanggal.after_or_equal' => 'Tanggal peminjaman minimal hari ini atau setelahnya.',
+
+            'waktu_mulai.required' => 'Waktu mulai harus diisi.',
+
+            'durasi_pinjam.required' => 'Durasi peminjaman harus diisi.',
+            'durasi_pinjam.integer' => 'Durasi peminjaman harus berupa angka.',
+            'durasi_pinjam.min' => 'Durasi minimal peminjaman adalah 1 jam.',
+            'durasi_pinjam.max' => 'Durasi maksimal peminjaman adalah 24 jam.',
+
+            'keperluan.required' => 'Keperluan peminjaman harus diisi.',
+            'keperluan.string' => 'Keperluan harus berupa teks.',
+            'keperluan.max' => 'Keperluan tidak boleh lebih dari 500 karakter.',
         ]);
-        
+
+
         $user = Auth::user();
-        
+
         // Calculate end time
         $waktuMulai = Carbon::createFromFormat('H:i', $request->waktu_mulai);
-        $waktuSelesai = $waktuMulai->copy()->addHours($request->durasi_pinjam);
-        
+        $waktuSelesai = $waktuMulai->copy()->addHours((int)$request->durasi_pinjam);
+
         // Check for conflicts
         $conflict = PeminjamanRuangan::where('ruangan_id', $request->ruangan_id)
             ->where('tanggal', $request->tanggal)
             ->where('status', '!=', 'ditolak')
-            ->where(function($query) use ($request, $waktuSelesai) {
+            ->where(function ($query) use ($request, $waktuSelesai) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $waktuSelesai->format('H:i')])
-                      ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $waktuSelesai->format('H:i')])
-                      ->orWhere(function($q) use ($request, $waktuSelesai) {
-                          $q->where('waktu_mulai', '<=', $request->waktu_mulai)
+                    ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $waktuSelesai->format('H:i')])
+                    ->orWhere(function ($q) use ($request, $waktuSelesai) {
+                        $q->where('waktu_mulai', '<=', $request->waktu_mulai)
                             ->where('waktu_selesai', '>=', $waktuSelesai->format('H:i'));
-                      });
+                    });
             })
             ->exists();
-        
+
         if ($conflict) {
             return back()->withErrors(['waktu_mulai' => 'Ruangan sudah dipesan pada waktu tersebut.'])->withInput();
         }
-        
+
         PeminjamanRuangan::create([
             'user_id' => $user->user_id,
             'ruangan_id' => $request->ruangan_id,
@@ -113,11 +132,11 @@ class UserPeminjamanController extends Controller
             'keperluan' => $request->keperluan,
             'status' => 'menunggu',
         ]);
-        
+
         return redirect()->route('user.peminjaman.index')
             ->with('success', 'Pengajuan peminjaman berhasil disubmit. Menunggu persetujuan admin.');
     }
-    
+
     /**
      * Display the specified borrowing
      *
@@ -127,14 +146,14 @@ class UserPeminjamanController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        
+
         $peminjaman = PeminjamanRuangan::with(['ruangan', 'user'])
             ->where('user_id', $user->user_id)
             ->findOrFail($id);
-        
+
         return view('user.peminjaman.show', compact('peminjaman'));
     }
-    
+
     /**
      * Cancel a pending borrowing request
      *
@@ -144,16 +163,16 @@ class UserPeminjamanController extends Controller
     public function cancel($id)
     {
         $user = Auth::user();
-        
+
         $peminjaman = PeminjamanRuangan::where('user_id', $user->user_id)
             ->where('status', 'menunggu')
             ->findOrFail($id);
-        
+
         $peminjaman->update(['status' => 'dibatalkan']);
-        
+
         return back()->with('success', 'Peminjaman berhasil dibatalkan.');
     }
-    
+
     /**
      * Check room availability
      *
@@ -164,17 +183,17 @@ class UserPeminjamanController extends Controller
     {
         $ruanganId = $request->get('ruangan_id');
         $tanggal = $request->get('tanggal');
-        
+
         if (!$ruanganId || !$tanggal) {
             return response()->json(['error' => 'Missing parameters'], 400);
         }
-        
+
         $bookings = PeminjamanRuangan::where('ruangan_id', $ruanganId)
             ->where('tanggal', $tanggal)
             ->where('status', '!=', 'ditolak')
             ->select('waktu_mulai', 'waktu_selesai', 'status')
             ->get();
-        
+
         return response()->json(['bookings' => $bookings]);
     }
 }

@@ -86,8 +86,8 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
-            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'id_card' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->user_id, "user_id")],
+            'id_card' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->user_id, "user_id")],
             'role' => ['required', Rule::in(['admin', 'user'])],
             'jenis_pengguna' => ['required', Rule::in(['siswa', 'guru'])],
             'password' => 'nullable|string|min:8|confirmed',

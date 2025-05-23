@@ -31,16 +31,23 @@ class AuthController extends Controller
         $request->validate([
             'login' => 'required|string',
             'password' => 'required|string',
+        ], [
+            'login.required' => 'Username atau ID Card harus diisi.',
+            'login.string' => 'Format login tidak valid.',
+
+            'password.required' => 'Kata sandi harus diisi.',
+            'password.string' => 'Format kata sandi tidak valid.',
         ]);
 
+
         // Check if login is ID Card, User ID, or Username
-        $loginField = filter_var($request->login, FILTER_VALIDATE_INT) ? 'user_id' : 'username';
-        
+        $loginField = filter_var($request->login, FILTER_VALIDATE_INT) ? 'id_card' : 'username';
+
         // If it's not a user_id (integer), check if it's an id_card or username
         if ($loginField === 'username') {
             $user = User::where('username', $request->login)
-                        ->orWhere('id_card', $request->login)
-                        ->first();
+                ->orWhere('id_card', $request->login)
+                ->first();
         } else {
             $user = User::where('user_id', $request->login)->first();
         }
