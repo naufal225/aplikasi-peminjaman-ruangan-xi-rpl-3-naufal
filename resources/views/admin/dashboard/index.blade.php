@@ -6,7 +6,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Pengajuan Peminjaman</p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $pengajuanPeminjaman ?? 24 }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $pengajuanPeminjaman }}</p>
                 </div>
                 <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -15,8 +15,8 @@
                 </div>
             </div>
             <div class="mt-2">
-                <p class="text-sm text-green-600 dark:text-green-400">
-                    <span class="font-medium">+5%</span> dari bulan lalu
+                <p class="text-sm {{ $peminjamanPercentage >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                    <span class="font-medium">{{ $peminjamanPercentage >= 0 ? '+' : '' }}{{ $peminjamanPercentage }}%</span> dari bulan lalu
                 </p>
             </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Pengajuan Pengembalian</p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $pengajuanPengembalian ?? 18 }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $pengajuanPengembalian }}</p>
                 </div>
                 <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35,8 +35,8 @@
                 </div>
             </div>
             <div class="mt-2">
-                <p class="text-sm text-green-600 dark:text-green-400">
-                    <span class="font-medium">+3%</span> dari bulan lalu
+                <p class="text-sm {{ $pengembalianPercentage >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                    <span class="font-medium">{{ $pengembalianPercentage >= 0 ? '+' : '' }}{{ $pengembalianPercentage }}%</span> dari bulan lalu
                 </p>
             </div>
         </div>
@@ -46,7 +46,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Peminjaman</p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $peminjaman ?? 42 }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $peminjaman }}</p>
                 </div>
                 <div class="bg-green-100 dark:bg-green-900 p-2 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,8 +55,8 @@
                 </div>
             </div>
             <div class="mt-2">
-                <p class="text-sm text-green-600 dark:text-green-400">
-                    <span class="font-medium">+8%</span> dari bulan lalu
+                <p class="text-sm {{ $totalPeminjamanPercentage >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                    <span class="font-medium">{{ $totalPeminjamanPercentage >= 0 ? '+' : '' }}{{ $totalPeminjamanPercentage }}%</span> dari bulan lalu
                 </p>
             </div>
         </div>
@@ -66,7 +66,7 @@
             <div class="flex justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Pengembalian</p>
-                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $pengembalian ?? 36 }}</p>
+                    <p class="text-2xl font-bold text-gray-800 dark:text-white">{{ $pengembalian }}</p>
                 </div>
                 <div class="bg-red-100 dark:bg-red-900 p-2 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,8 +75,8 @@
                 </div>
             </div>
             <div class="mt-2">
-                <p class="text-sm text-green-600 dark:text-green-400">
-                    <span class="font-medium">+6%</span> dari bulan lalu
+                <p class="text-sm {{ $totalPengembalianPercentage >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                    <span class="font-medium">{{ $totalPengembalianPercentage >= 0 ? '+' : '' }}{{ $totalPengembalianPercentage }}%</span> dari bulan lalu
                 </p>
             </div>
         </div>
@@ -119,90 +119,48 @@
             <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Aktivitas Terbaru</h2>
         </div>
         <div class="divide-y divide-gray-200 dark:divide-gray-700">
-            <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                <div class="flex items-center">
-                    <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-800 dark:text-white">Pengajuan Peminjaman Ruang Rapat</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Diajukan oleh Ahmad - 2 jam yang lalu</p>
-                    </div>
-                    <div class="text-xs text-gray-400 dark:text-gray-500">
-                        14:30
-                    </div>
-                </div>
-            </div>
-            
-            <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                <div class="flex items-center">
-                    <div class="bg-green-100 dark:bg-green-900 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-800 dark:text-white">Peminjaman Ruang Aula Disetujui</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Disetujui oleh Admin - 3 jam yang lalu</p>
-                    </div>
-                    <div class="text-xs text-gray-400 dark:text-gray-500">
-                        13:15
-                    </div>
-                </div>
-            </div>
-            
-            <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                <div class="flex items-center">
-                    <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-800 dark:text-white">Pengajuan Pengembalian Ruang Lab</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Diajukan oleh Budi - 5 jam yang lalu</p>
-                    </div>
-                    <div class="text-xs text-gray-400 dark:text-gray-500">
-                        11:45
+            @forelse($recentActivities as $activity)
+                <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                    <div class="flex items-center">
+                        <div class="{{ $activity['icon_class'] }} p-2 rounded-lg mr-4">
+                            @if(strpos($activity['activity_type'], 'Peminjaman') !== false && strpos($activity['activity_type'], 'Menunggu') !== false)
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                </svg>
+                            @elseif(strpos($activity['activity_type'], 'Disetujui') !== false && $activity['type'] === 'peminjaman')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            @elseif(strpos($activity['activity_type'], 'Pengajuan Pengembalian') !== false)
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                            @elseif(strpos($activity['activity_type'], 'Pengembalian') !== false && strpos($activity['activity_type'], 'Disetujui') !== false)
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-800 dark:text-white">{{ $activity['activity_type'] }} {{ $activity['ruangan_name'] }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ $activity['type'] === 'peminjaman' ? 'Diajukan' : 'Dikembalikan' }} oleh {{ $activity['user_name'] }} - {{ $activity['time_ago'] }}
+                            </p>
+                        </div>
+                        <div class="text-xs text-gray-400 dark:text-gray-500">
+                            {{ $activity['time'] }}
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                <div class="flex items-center">
-                    <div class="bg-red-100 dark:bg-red-900 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-800 dark:text-white">Pengembalian Ruang Kelas Disetujui</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Disetujui oleh Admin - 6 jam yang lalu</p>
-                    </div>
-                    <div class="text-xs text-gray-400 dark:text-gray-500">
-                        10:30
-                    </div>
+            @empty
+                <div class="px-6 py-8 text-center">
+                    <p class="text-gray-500 dark:text-gray-400">Belum ada aktivitas terbaru</p>
                 </div>
-            </div>
-            
-            <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                <div class="flex items-center">
-                    <div class="bg-yellow-100 dark:bg-yellow-900 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-medium text-gray-800 dark:text-white">Peminjaman Menunggu Persetujuan</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Diajukan oleh Sari - 8 jam yang lalu</p>
-                    </div>
-                    <div class="text-xs text-gray-400 dark:text-gray-500">
-                        08:15
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
         
         <!-- View All Button -->
@@ -215,11 +173,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Pass PHP data to JavaScript
+        const chartData = @json($chartData);
+        
         class DashboardChart {
             constructor() {
                 this.chart = null;
                 this.currentType = 'bar';
                 this.currentPeriod = window.innerWidth < 768 ? 7 : 30; // Default 7 days on mobile, 30 on desktop
+                this.chartData = chartData;
                 this.init();
             }
 
@@ -272,29 +234,29 @@
                 });
             }
 
-            generateData(days) {
-                const dates = [];
-                const today = new Date();
-
-                for (let i = days - 1; i >= 0; i--) {
-                    const date = new Date();
-                    date.setDate(today.getDate() - i);
-                    
-                    if (days === 7) {
-                        // Show day names for 7 days
-                        dates.push(date.toLocaleDateString('id-ID', { weekday: 'short' }));
-                    } else {
-                        // Show date for 30 days
-                        dates.push(date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
-                    }
+            getChartData() {
+                // Use real data from backend
+                let dates = this.chartData.dates;
+                let pengajuanPeminjaman = this.chartData.pengajuanPeminjaman;
+                let pengajuanPengembalian = this.chartData.pengajuanPengembalian;
+                let peminjaman = this.chartData.peminjaman;
+                let pengembalian = this.chartData.pengembalian;
+                
+                // If we're showing only 7 days, take the last 7 days
+                if (this.currentPeriod === 7) {
+                    dates = dates.slice(-7);
+                    pengajuanPeminjaman = pengajuanPeminjaman.slice(-7);
+                    pengajuanPengembalian = pengajuanPengembalian.slice(-7);
+                    peminjaman = peminjaman.slice(-7);
+                    pengembalian = pengembalian.slice(-7);
                 }
-
+                
                 return {
                     dates,
-                    pengajuanPeminjaman: Array.from({length: days}, () => Math.floor(Math.random() * 5) + 1),
-                    pengajuanPengembalian: Array.from({length: days}, () => Math.floor(Math.random() * 5) + 1),
-                    peminjaman: Array.from({length: days}, () => Math.floor(Math.random() * 8) + 2),
-                    pengembalian: Array.from({length: days}, () => Math.floor(Math.random() * 8) + 2)
+                    pengajuanPeminjaman,
+                    pengajuanPengembalian,
+                    peminjaman,
+                    pengembalian
                 };
             }
 
@@ -325,7 +287,7 @@
             }
 
             createChart() {
-                const data = this.generateData(this.currentPeriod);
+                const data = this.getChartData();
                 const colors = this.getChartColors();
                 const ctx = document.getElementById('activityChart').getContext('2d');
 

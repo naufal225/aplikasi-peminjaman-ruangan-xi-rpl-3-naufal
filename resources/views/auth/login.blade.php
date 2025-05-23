@@ -188,11 +188,6 @@
                                 Ingat saya
                             </label>
                         </div>
-                        <div class="text-sm">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors duration-200">
-                                Lupa password?
-                            </a>
-                        </div>
                     </div>
 
                     <div>
