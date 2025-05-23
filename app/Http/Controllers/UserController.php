@@ -11,7 +11,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-        $sort = $request->input('sort', 'nama_lengkap');
+        $sort = $request->input('sort', 'user_id');
         $direction = $request->input('direction', 'asc');
 
         $users = User::where('nama_lengkap', 'like', "%{$search}%")
