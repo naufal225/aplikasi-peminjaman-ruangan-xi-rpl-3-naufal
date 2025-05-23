@@ -41,13 +41,39 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['admin', 'user'])],
             'jenis_pengguna' => ['required', Rule::in(['siswa', 'guru'])],
             'password' => 'required|string|min:8|confirmed',
+        ], [
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'nama_lengkap.string' => 'Nama lengkap harus berupa teks.',
+            'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 255 karakter.',
+
+            'username.required' => 'Username wajib diisi.',
+            'username.string' => 'Username harus berupa teks.',
+            'username.max' => 'Username tidak boleh lebih dari 255 karakter.',
+            'username.unique' => 'Username sudah digunakan, silakan pilih yang lain.',
+
+            'id_card.required' => 'ID Card wajib diisi.',
+            'id_card.string' => 'ID Card harus berupa teks.',
+            'id_card.max' => 'ID Card tidak boleh lebih dari 255 karakter.',
+            'id_card.unique' => 'ID Card sudah terdaftar.',
+
+            'role.required' => 'Role pengguna wajib dipilih.',
+            'role.in' => 'Role yang dipilih tidak valid.',
+
+            'jenis_pengguna.required' => 'Jenis pengguna wajib dipilih.',
+            'jenis_pengguna.in' => 'Jenis pengguna yang dipilih tidak valid.',
+
+            'password.required' => 'Password wajib diisi.',
+            'password.string' => 'Password harus berupa teks.',
+            'password.min' => 'Password minimal terdiri dari 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
+
 
         $validated['password'] = bcrypt($validated['password']);
 
         User::create($validated);
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil ditambahkan');
     }
 
@@ -65,7 +91,32 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['admin', 'user'])],
             'jenis_pengguna' => ['required', Rule::in(['siswa', 'guru'])],
             'password' => 'nullable|string|min:8|confirmed',
+        ], [
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'nama_lengkap.string' => 'Nama lengkap harus berupa teks.',
+            'nama_lengkap.max' => 'Nama lengkap tidak boleh lebih dari 255 karakter.',
+
+            'username.required' => 'Username wajib diisi.',
+            'username.string' => 'Username harus berupa teks.',
+            'username.max' => 'Username tidak boleh lebih dari 255 karakter.',
+            'username.unique' => 'Username sudah digunakan, silakan pilih yang lain.',
+
+            'id_card.required' => 'ID Card wajib diisi.',
+            'id_card.string' => 'ID Card harus berupa teks.',
+            'id_card.max' => 'ID Card tidak boleh lebih dari 255 karakter.',
+            'id_card.unique' => 'ID Card sudah terdaftar.',
+
+            'role.required' => 'Role pengguna wajib dipilih.',
+            'role.in' => 'Role yang dipilih tidak valid.',
+
+            'jenis_pengguna.required' => 'Jenis pengguna wajib dipilih.',
+            'jenis_pengguna.in' => 'Jenis pengguna yang dipilih tidak valid.',
+
+            'password.string' => 'Password harus berupa teks.',
+            'password.min' => 'Password minimal terdiri dari 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
+
 
         if (isset($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
@@ -75,7 +126,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil diperbarui');
     }
 
@@ -83,7 +134,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil dihapus');
     }
 
@@ -99,7 +150,7 @@ class UserController extends Controller
             'jenis_pengguna' => ['required', Rule::in(['siswa', 'guru'])],
         ]);
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'Data user berhasil diimpor');
     }
 }

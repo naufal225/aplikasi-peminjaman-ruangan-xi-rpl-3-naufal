@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengajuan_pengembalian_ruangan', function (Blueprint $table) {
             $table->id('pengajuan_pengembalian_id');
-            $table->foreignId("peminjaman_id")->constrained('peminjaman_ruangan');
+            $table->foreignId("peminjaman_id")->constrained('peminjaman_ruangan', 'peminjaman_id');
             $table->foreignId('user_id')->constained('users');
             $table->enum('status', ['belum_disetujui', 'disetujui'])->default('belum_disetujui');
             $table->dateTime('tanggal_pengajuan');

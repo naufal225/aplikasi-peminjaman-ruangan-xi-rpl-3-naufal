@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PeminjamanPengembalianController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,3 +26,12 @@ Route::put('/ruangan/{ruangan}', [RuanganController::class, 'update'])->name('ru
 Route::delete('/ruangan/{ruangan}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
 Route::get('/ruangan/import', [RuanganController::class, 'importForm'])->name('ruangan.import.form');
 Route::post('/ruangan/import', [RuanganController::class, 'import'])->name('ruangan.import');
+
+Route::prefix('peminjaman-ruangan')->name('peminjaman-pengembalian.')->group(function () {
+    Route::get('/', [PeminjamanPengembalianController::class, 'index'])->name('index');
+    Route::get('/create', [PeminjamanPengembalianController::class, 'create'])->name('create');
+    Route::post('/', [PeminjamanPengembalianController::class, 'store'])->name('store');
+    Route::patch('/{id}/status', [PeminjamanPengembalianController::class, 'updateStatus'])->name('update-status');
+    Route::patch('/pengembalian/{id}/status', [PeminjamanPengembalianController::class, 'updatePengembalianStatus'])->name('update-pengembalian-status');
+    Route::post('/export', [PeminjamanPengembalianController::class, 'exportData'])->name('export');
+});
