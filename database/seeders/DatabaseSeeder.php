@@ -17,6 +17,21 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        User::create([
+            "username" => "admin123",
+            "nama_lengkap" => "Admin",
+            "password" => bcrypt("password"),
+            "jenis_pengguna" => "siswa",
+            "role" => "admin"
+        ]);
+        User::create([
+            "username" => "user123",
+            "nama_lengkap" => "User",
+            "password" => bcrypt("password"),
+            "jenis_pengguna" => "siswa",
+            "role" => "user"
+        ]);
+
         User::factory(20)->create();
         Ruangan::factory(15)->create();
         // PeminjamanRuangan::factory(40)->create();
