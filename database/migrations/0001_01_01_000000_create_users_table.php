@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('password');
             $table->enum('role', ['user','admin']); // user, admin
             $table->enum('jenis_pengguna', ['siswa','guru']); // siswa, guru
+            $table->longText('url_foto_profil')->nullable();
             $table->string('nama_lengkap');
             $table->timestamps();
         });
