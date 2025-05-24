@@ -159,6 +159,10 @@
             <div id="userTableContainer">
                 @include('admin.users.table')
             </div>
+            <div class="mt-4">
+                {{ $users->appends(['search' => request('search'), 'sort' => $sort, 'direction' => $direction])->links()
+                }}
+            </div>
         </div>
     </div>
 
