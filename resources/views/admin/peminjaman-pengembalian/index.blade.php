@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6 overflow-x-hidden">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Kelola Peminjaman & Pengembalian Ruangan</h1>
             <div class="flex flex-col sm:flex-row gap-3">

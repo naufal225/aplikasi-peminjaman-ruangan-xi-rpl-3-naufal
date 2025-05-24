@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [PeminjamanPengembalianController::class, 'index'])->name('index');
             // Route::get('/create', [PeminjamanPengembalianController::class, 'create'])->name('create');
             Route::post('/', [PeminjamanPengembalianController::class, 'store'])->name('store');
+            Route::get('/{peminjaman_ruangan:peminjaman_id}', [PeminjamanPengembalianController::class, 'show'])->name('show');
             Route::patch('/{id}/status', [PeminjamanPengembalianController::class, 'updateStatus'])->name('update-status');
             Route::patch('/pengembalian/{id}/status', [PeminjamanPengembalianController::class, 'updatePengembalianStatus'])->name('update-pengembalian-status');
             Route::post('/export', [PeminjamanPengembalianController::class, 'exportData'])->name('export');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PeminjamanPengembalianExport;
 use App\Models\PeminjamanRuangan;
 use App\Models\PengajuanPengembalian;
 use App\Models\PengembalianRuangan;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PeminjamanPengembalianController extends Controller
 {
@@ -112,7 +114,7 @@ class PeminjamanPengembalianController extends Controller
         $durasiJam = $validated['durasi_pinjam']; // Assuming durasi_pinjam is in hours
 
         $waktuMulaiDateTime = Carbon::parse($tanggal . ' ' . $waktuMulai);
-        $waktuSelesai = $waktuMulaiDateTime->copy()->addHours((int)$durasiJam);
+        $waktuSelesai = $waktuMulaiDateTime->copy()->addHours((int) $durasiJam);
 
         // Check for conflicts
         $conflictingBookings = PeminjamanRuangan::where('ruangan_id', $validated['ruangan_id'])
@@ -189,33 +191,41 @@ class PeminjamanPengembalianController extends Controller
             ->with('success', 'Status pengembalian berhasil diperbarui');
     }
 
+     public function show(PeminjamanRuangan $peminjaman_ruangan)
+    {
+        $peminjaman = PeminjamanRuangan::with(['ruangan', 'user'])
+            ->where('peminjaman_id', $peminjaman_ruangan->peminjaman_id)
+            ->firstOrFail();
+
+        return view('admin.peminjaman-pengembalian.peminjaman.show', [
+            'peminjaman' => $peminjaman,
+        ]);
+    }
+
     public function exportData(Request $request)
     {
         $request->validate([
+            'export_type' => 'required|in:all,peminjaman,pengembalian',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'export_type' => 'required|in:peminjaman,pengembalian,all',
         ], [
-            'start_date.required' => 'Tanggal mulai harus diisi.',
-            'start_date.date' => 'Format tanggal mulai tidak valid.',
+            'export_type.required' => 'Jenis data yang ingin diekspor wajib dipilih.',
+            'export_type.in' => 'Jenis data harus berupa salah satu dari: semua, peminjaman, atau pengembalian.',
+
+            'start_date.required' => 'Tanggal awal harus diisi.',
+            'start_date.date' => 'Format tanggal awal tidak valid.',
 
             'end_date.required' => 'Tanggal akhir harus diisi.',
             'end_date.date' => 'Format tanggal akhir tidak valid.',
-            'end_date.after_or_equal' => 'Tanggal akhir tidak boleh lebih awal dari tanggal mulai.',
-
-            'export_type.required' => 'Jenis data yang akan diekspor harus dipilih.',
-            'export_type.in' => 'Jenis export harus salah satu dari: peminjaman, pengembalian, atau all.',
+            'end_date.after_or_equal' => 'Tanggal akhir tidak boleh lebih awal dari tanggal awal.',
         ]);
 
+        $export = new PeminjamanPengembalianExport(
+            $request->start_date,
+            $request->end_date,
+            $request->export_type
+        );
 
-        $startDate = Carbon::parse($request->start_date)->startOfDay();
-        $endDate = Carbon::parse($request->end_date)->endOfDay();
-
-        // In a real application, you would generate an Excel/CSV file here
-        // For this example, we'll just redirect back with a success message
-
-        return redirect()->route('peminjaman-pengembalian.index')
-            ->with('success', 'Data berhasil diekspor untuk periode ' .
-                $startDate->format('d M Y') . ' sampai ' . $endDate->format('d M Y'));
+        return Excel::download($export, 'laporan_peminjaman_pengembalian.xlsx');
     }
 }
