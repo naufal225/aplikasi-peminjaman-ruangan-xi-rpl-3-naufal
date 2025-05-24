@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::get('/users/import', [UserController::class, 'importForm'])->name('users.import.form');
         Route::post('/users/import', [UserController::class, 'import'])->name('users.import');
+        Route::get('/template/download', [UserController::class, 'downloadTemplate'])->name('template.download');
 
         Route::get('/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
         Route::get('/ruangan/create', [RuanganController::class, 'create'])->name('ruangan.create');

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UsersImport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Importer;
+
+use function Laravel\Prompts\error;
 
 class UserController extends Controller
 {
@@ -147,10 +152,37 @@ class UserController extends Controller
     {
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls',
-            'jenis_pengguna' => ['required', Rule::in(['siswa', 'guru'])],
+        ], [
+            "file.required" => "File wajib diisi.",
+            "file.file" => "File wajib berupa file.",
+            "file.mimes" => "File harus berupa file Excel (XLSX, XLS)."
         ]);
 
+        $request->file('file')->store('imports_data_user', 'public');
+
+        $importer = new UsersImport();
+
+        $error = false;
+        $message = [];
+
+        Excel::import($importer, $request->file('file'));
+
+        $rows_count = $importer->getRowsCount();
+        $created_or_updated_rows = $importer->getCreatedOrUpdatedRowsCount();
+        $failed_rows = $importer->getFailedRows();
+
+         if($created_or_updated_rows == 0 || $rows_count == 0) {
+                $error = true;
+                $message = "Gagal mengimport data, pastikan data valid.";
+            }
+
+        if($error) {
+            return redirect()->route('users.index')
+                ->with('error', $message);
+        }   
+
         return redirect()->route('users.index')
-            ->with('success', 'Data user berhasil diimpor');
+            ->with('success', 'Data user berhasil diimpor')
+            ->with('failed_rows', $failed_rows);
     }
 }
