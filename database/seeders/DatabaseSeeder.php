@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         User::create([
             "username" => "admin123",
+            "id_card" => "232410104",
             "nama_lengkap" => "Admin",
             "password" => bcrypt("password"),
             "jenis_pengguna" => "siswa",
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
         User::create([
             "username" => "user123",
+            "id_card" => "232410105",
             "nama_lengkap" => "User",
             "password" => bcrypt("password"),
             "jenis_pengguna" => "siswa",
