@@ -148,11 +148,11 @@
                         <div class="flex-1">
                             <p class="font-medium text-gray-800 dark:text-white">{{ $activity['activity_type'] }} {{ $activity['ruangan_name'] }}</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ $activity['type'] === 'peminjaman' ? 'Diajukan' : 'Dikembalikan' }} oleh {{ $activity['user_name'] }} - {{ $activity['time_ago'] }}
+                                {{ $activity['type'] === 'peminjaman' ? 'Diajukan' : 'Dikembalikan' }} oleh {{ $activity['user_name'] }} - {{ \Carbon\Carbon::parse($activity['time'])->diffForHumans() }}
                             </p>
                         </div>
                         <div class="text-xs text-gray-400 dark:text-gray-500">
-                            {{ $activity['time'] }}
+                            {{ \Carbon\Carbon::parse($activity['time'])->diffForHumans() }}
                         </div>
                     </div>
                 </div>

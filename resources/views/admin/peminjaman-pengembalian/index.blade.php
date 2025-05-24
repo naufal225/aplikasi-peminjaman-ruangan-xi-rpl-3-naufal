@@ -4,9 +4,12 @@
             <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Kelola Peminjaman & Pengembalian Ruangan</h1>
             <div class="flex flex-col sm:flex-row gap-3">
 
-                <button type="button" onclick="openExportModal()" class="inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                <button type="button" onclick="openExportModal()"
+                    class="inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
                     Export Data
                 </button>
@@ -16,10 +19,12 @@
         <!-- Tab Navigation -->
         <div class="border-b border-gray-200 mb-6">
             <nav class="-mb-px flex space-x-6">
-                <a href="{{ route('peminjaman-pengembalian.index', ['type' => 'peminjaman']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $type === 'peminjaman' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                <a href="{{ route('peminjaman-pengembalian.index', ['type' => 'peminjaman']) }}"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $type === 'peminjaman' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                     Peminjaman Ruangan
                 </a>
-                <a href="{{ route('peminjaman-pengembalian.index', ['type' => 'pengembalian']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $type === 'pengembalian' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                <a href="{{ route('peminjaman-pengembalian.index', ['type' => 'pengembalian']) }}"
+                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $type === 'pengembalian' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                     Pengembalian Ruangan
                 </a>
             </nav>
@@ -28,33 +33,33 @@
         <!-- Search and Filter -->
         <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="relative">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Cari..."
-                    value="{{ $search }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
+                <input type="text" id="searchInput" placeholder="Cari..." value="{{ $search }}"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
             </div>
             <div class="flex space-x-2">
-                <select id="statusFilter" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="statusFilter"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Semua Status</option>
                     @if($type === 'peminjaman')
-                        <option value="menunggu" {{ $status === 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                        <option value="disetujui" {{ $status === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
-                        <option value="ditolak" {{ $status === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                        <option value="selesai" {{ $status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="menunggu" {{ $status==='menunggu' ? 'selected' : '' }}>Menunggu</option>
+                    <option value="disetujui" {{ $status==='disetujui' ? 'selected' : '' }}>Disetujui</option>
+                    <option value="ditolak" {{ $status==='ditolak' ? 'selected' : '' }}>Ditolak</option>
+                    <option value="selesai" {{ $status==='selesai' ? 'selected' : '' }}>Selesai</option>
                     @else
-                        <option value="belum_disetujui" {{ $status === 'belum_disetujui' ? 'selected' : '' }}>Belum Disetujui</option>
-                        <option value="disetujui" {{ $status === 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                    <option value="belum_disetujui" {{ $status==='belum_disetujui' ? 'selected' : '' }}>Belum Disetujui
+                    </option>
+                    <option value="disetujui" {{ $status==='disetujui' ? 'selected' : '' }}>Disetujui</option>
                     @endif
                 </select>
-                <button id="applyFilter" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                <button id="applyFilter"
+                    class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                     Filter
                 </button>
             </div>
@@ -62,36 +67,41 @@
 
         <!-- Flash Message -->
         @if (session('success'))
-            <div id="flashMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm">{{ session('success') }}</p>
-                    </div>
-                    <div class="ml-auto pl-3">
-                        <div class="-mx-1.5 -my-1.5">
-                            <button onclick="document.getElementById('flashMessage').remove()" class="inline-flex rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
+        <div id="flashMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm">{{ session('success') }}</p>
+                </div>
+                <div class="ml-auto pl-3">
+                    <div class="-mx-1.5 -my-1.5">
+                        <button onclick="document.getElementById('flashMessage').remove()"
+                            class="inline-flex rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
         @endif
 
         <!-- Table Container -->
         <div class="overflow-x-auto">
             <div id="tableContainer">
                 @if($type === 'peminjaman')
-                    @include('admin.peminjaman-pengembalian.peminjaman-table')
+                @include('admin.peminjaman-pengembalian.peminjaman-table')
                 @else
-                    @include('admin.peminjaman-pengembalian.pengembalian-table')
+                @include('admin.peminjaman-pengembalian.pengembalian-table')
                 @endif
             </div>
         </div>
@@ -104,14 +114,18 @@
                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <form action="{{ route('peminjaman-pengembalian.export') }}" method="POST">
                     @csrf
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
-                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            <div
+                                class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                 </svg>
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
@@ -120,30 +134,40 @@
                                 </h3>
                                 <div class="mt-4 space-y-4">
                                     <div>
-                                        <label for="export_type" class="block text-sm font-medium text-gray-700">Jenis Data</label>
-                                        <select name="export_type" id="export_type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                        <label for="export_type" class="block text-sm font-medium text-gray-700">Jenis
+                                            Data</label>
+                                        <select name="export_type" id="export_type"
+                                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
                                             <option value="all">Semua Data</option>
                                             <option value="peminjaman">Peminjaman Saja</option>
                                             <option value="pengembalian">Pengembalian Saja</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                                        <input type="datetime-local" name="start_date" id="start_date" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md" required>
+                                        <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal
+                                            Mulai</label>
+                                        <input type="datetime-local" name="start_date" id="start_date"
+                                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                                            required>
                                     </div>
                                     <div>
-                                        <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Akhir</label>
-                                        <input type="datetime-local" name="end_date" id="end_date" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md" required>
+                                        <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal
+                                            Akhir</label>
+                                        <input type="datetime-local" name="end_date" id="end_date"
+                                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                                            required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="submit"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
                             Export
                         </button>
-                        <button type="button" onclick="closeExportModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="button" onclick="closeExportModal()"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             Batal
                         </button>
                     </div>
@@ -151,6 +175,8 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         // Live search functionality
@@ -206,38 +232,58 @@
 
         // Update status
         function updateStatus(id, status) {
-            if (confirm('Apakah Anda yakin ingin mengubah status menjadi ' + status + '?')) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `{{ url('peminjaman-ruangan') }}/${id}/status`;
+    Swal.fire({
+        title: 'Yakin ubah status?',
+        text: 'Status akan diubah menjadi: ' + status,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#38c172', // hijau
+        cancelButtonColor: '#6c757d',  // abu-abu
+        confirmButtonText: 'Ya, ubah!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `{{ url('peminjaman-ruangan') }}/${id}/status`;
 
-                const csrfToken = document.createElement('input');
-                csrfToken.type = 'hidden';
-                csrfToken.name = '_token';
-                csrfToken.value = '{{ csrf_token() }}';
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
 
-                const methodField = document.createElement('input');
-                methodField.type = 'hidden';
-                methodField.name = '_method';
-                methodField.value = 'PATCH';
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'PATCH';
 
-                const statusField = document.createElement('input');
-                statusField.type = 'hidden';
-                statusField.name = 'status';
-                statusField.value = status;
+            const statusField = document.createElement('input');
+            statusField.type = 'hidden';
+            statusField.name = 'status';
+            statusField.value = status;
 
-                form.appendChild(csrfToken);
-                form.appendChild(methodField);
-                form.appendChild(statusField);
+            form.appendChild(csrfToken);
+            form.appendChild(methodField);
+            form.appendChild(statusField);
 
-                document.body.appendChild(form);
-                form.submit();
-            }
+            document.body.appendChild(form);
+            form.submit();
         }
+    });
+}
 
         // Update pengembalian status
         function updatePengembalianStatus(id, status) {
-            if (confirm('Apakah Anda yakin ingin mengubah status menjadi ' + status + '?')) {
+           Swal.fire({
+        title: 'Yakin ubah status?',
+        text: 'Status akan diubah menjadi: ' + status,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#38c172', // hijau
+        cancelButtonColor: '#6c757d',  // abu-abu
+        confirmButtonText: 'Ya, ubah!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = `{{ url('peminjaman-ruangan/pengembalian') }}/${id}/status`;
@@ -263,7 +309,7 @@
 
                 document.body.appendChild(form);
                 form.submit();
-            }
+            })
         }
 
         // Export modal

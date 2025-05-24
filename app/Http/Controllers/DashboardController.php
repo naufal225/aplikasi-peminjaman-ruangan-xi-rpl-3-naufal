@@ -10,65 +10,65 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index() 
+    public function index()
     {
         // Get counts for stats cards
-        $pengajuanPeminjaman = PeminjamanRuangan::where('status', 'menunggu')->count();
-        
-        $pengajuanPengembalian = PengembalianRuangan::where('status', 'belum_disetujui')->count();
-        
+        $pengajuanPeminjaman = PeminjamanRuangan::count();
+
+        $pengajuanPengembalian = PengembalianRuangan::count();
+
         $peminjaman = PeminjamanRuangan::whereIn('status', ['disetujui', 'selesai'])->count();
-        
+
         $pengembalian = PengembalianRuangan::where('status', 'disetujui')->count();
-        
+
         // Calculate percentage changes from last month
         $lastMonthStart = Carbon::now()->subMonth()->startOfMonth();
         $lastMonthEnd = Carbon::now()->subMonth()->endOfMonth();
         $currentMonthStart = Carbon::now()->startOfMonth();
-        
+
         // Peminjaman percentage change
         $lastMonthPeminjaman = PeminjamanRuangan::where('status', 'menunggu')
             ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
             ->count();
-        
-        $peminjamanPercentage = $lastMonthPeminjaman > 0 
-            ? round((($pengajuanPeminjaman - $lastMonthPeminjaman) / $lastMonthPeminjaman) * 100) 
+
+        $peminjamanPercentage = $lastMonthPeminjaman > 0
+            ? round((($pengajuanPeminjaman - $lastMonthPeminjaman) / $lastMonthPeminjaman) * 100)
             : 0; // Default to 5% if no data from last month
-        
+
         // Pengembalian percentage change
         $lastMonthPengembalian = PengembalianRuangan::where('status', 'belum_disetujui')
             ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
             ->count();
-        
-        $pengembalianPercentage = $lastMonthPengembalian > 0 
-            ? round((($pengajuanPengembalian - $lastMonthPengembalian) / $lastMonthPengembalian) * 100) 
+
+        $pengembalianPercentage = $lastMonthPengembalian > 0
+            ? round((($pengajuanPengembalian - $lastMonthPengembalian) / $lastMonthPengembalian) * 100)
             : 0; // Default to 3% if no data from last month
-            
+
         // Total peminjaman percentage change
         $lastMonthTotalPeminjaman = PeminjamanRuangan::whereIn('status', ['disetujui', 'selesai'])
             ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
             ->count();
-        
-        $totalPeminjamanPercentage = $lastMonthTotalPeminjaman > 0 
-            ? round((($peminjaman - $lastMonthTotalPeminjaman) / $lastMonthTotalPeminjaman) * 100) 
+
+        $totalPeminjamanPercentage = $lastMonthTotalPeminjaman > 0
+            ? round((($peminjaman - $lastMonthTotalPeminjaman) / $lastMonthTotalPeminjaman) * 100)
             : 0; // Default to 8% if no data from last month
-            
+
         // Total pengembalian percentage change
         $lastMonthTotalPengembalian = PengembalianRuangan::where('status', 'disetujui')
             ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
             ->count();
-        
-        $totalPengembalianPercentage = $lastMonthTotalPengembalian > 0 
-            ? round((($pengembalian - $lastMonthTotalPengembalian) / $lastMonthTotalPengembalian) * 100) 
+
+        $totalPengembalianPercentage = $lastMonthTotalPengembalian > 0
+            ? round((($pengembalian - $lastMonthTotalPengembalian) / $lastMonthTotalPengembalian) * 100)
             : 0; // Default to 6% if no data from last month
-        
+
         // Get recent activities
         $recentActivities = $this->getRecentActivities();
-        
+
         // Get chart data for 30 days
         $chartData = $this->getChartData();
 
-        
+
         return view('admin.dashboard.index', compact(
             'pengajuanPeminjaman',
             'pengajuanPengembalian',
@@ -82,10 +82,10 @@ class DashboardController extends Controller
             'chartData'
         ));
     }
-    
+
     /**
      * Get recent activities for the dashboard
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     private function getRecentActivities()
@@ -98,7 +98,7 @@ class DashboardController extends Controller
             ->map(function ($item) {
                 $activityType = '';
                 $iconClass = '';
-                
+
                 switch ($item->status) {
                     case 'menunggu':
                         $activityType = 'Peminjaman Menunggu Persetujuan';
@@ -117,7 +117,7 @@ class DashboardController extends Controller
                         $iconClass = 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400';
                         break;
                 }
-                
+
                 return [
                     'type' => 'peminjaman',
                     'activity_type' => $activityType,
@@ -129,7 +129,7 @@ class DashboardController extends Controller
                     'created_at' => $item->created_at
                 ];
             });
-            
+
         // Get recent pengembalian activities
         $pengembalianActivities = PengembalianRuangan::with(['peminjaman.user', 'peminjaman.ruangan'])
             ->orderBy('created_at', 'desc')
@@ -138,7 +138,7 @@ class DashboardController extends Controller
             ->map(function ($item) {
                 $activityType = '';
                 $iconClass = '';
-                
+
                 switch ($item->status) {
                     case 'belum_disetujui':
                         $activityType = 'Pengajuan Pengembalian Ruangan';
@@ -149,7 +149,7 @@ class DashboardController extends Controller
                         $iconClass = 'bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400';
                         break;
                 }
-                
+
                 return [
                     'type' => 'pengembalian',
                     'activity_type' => $activityType,
@@ -161,20 +161,20 @@ class DashboardController extends Controller
                     'created_at' => $item->created_at
                 ];
             });
-            
+
         // Combine and sort activities
         $allActivities = $peminjamanActivities->concat($pengembalianActivities)
             ->sortByDesc('created_at')
             ->take(5)
             ->values()
             ->all();
-            
+
         return $allActivities;
     }
-    
+
     /**
      * Get chart data for the last 30 days
-     * 
+     *
      * @return array
      */
     private function getChartData()
@@ -184,33 +184,31 @@ class DashboardController extends Controller
         $pengajuanPengembalianData = [];
         $peminjamanData = [];
         $pengembalianData = [];
-        
+
         // Generate dates for the last 30 days
         for ($i = 29; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i);
             $dates[] = $date->format('d M');
-            
+
             // Count peminjaman requests for this date
-            $pengajuanPeminjamanData[] = PeminjamanRuangan::where('status', 'menunggu')
-                ->whereDate('created_at', $date)
+            $pengajuanPeminjamanData[] = PeminjamanRuangan::whereDate('created_at', $date)
                 ->count();
-                
+
             // Count pengembalian requests for this date
-            $pengajuanPengembalianData[] = PengembalianRuangan::where('status', 'belum_disetujui')
-                ->whereDate('created_at', $date)
+            $pengajuanPengembalianData[] = PengembalianRuangan::whereDate('created_at', $date)
                 ->count();
-                
+
             // Count approved peminjaman for this date
             $peminjamanData[] = PeminjamanRuangan::whereIn('status', ['disetujui', 'selesai'])
                 ->whereDate('created_at', $date)
                 ->count();
-                
+
             // Count approved pengembalian for this date
             $pengembalianData[] = PengembalianRuangan::where('status', 'disetujui')
                 ->whereDate('created_at', $date)
                 ->count();
         }
-        
+
         return [
             'dates' => $dates,
             'pengajuanPeminjaman' => $pengajuanPeminjamanData,
@@ -219,10 +217,10 @@ class DashboardController extends Controller
             'pengembalian' => $pengembalianData
         ];
     }
-    
+
     /**
      * Convert timestamp to "time ago" format
-     * 
+     *
      * @param \Carbon\Carbon $timestamp
      * @return string
      */
@@ -230,7 +228,7 @@ class DashboardController extends Controller
     {
         $now = Carbon::now();
         $diff = $timestamp->diffInHours($now);
-        
+
         if ($diff < 1) {
             $minutes = $timestamp->diffInMinutes($now);
             return $minutes . ' menit yang lalu';
