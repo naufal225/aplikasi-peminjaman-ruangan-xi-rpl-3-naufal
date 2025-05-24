@@ -76,6 +76,3 @@
     </tbody>
 </table>
 
-<div class="mt-4">
-    {{ $ruangan->appends(['search' => request('search'), 'sort' => $sort, 'direction' => $direction])->links() }}
-</div>

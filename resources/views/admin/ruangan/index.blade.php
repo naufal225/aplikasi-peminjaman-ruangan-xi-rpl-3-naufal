@@ -69,7 +69,7 @@
         </div>
         @endif
 
-         @if (session('failed_rows'))
+        @if (session('failed_rows'))
         <div id="flashMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -160,6 +160,11 @@
             <div id="ruanganTableContainer">
                 @include('admin.ruangan.table')
             </div>
+
+        </div>
+        <div class="mt-4">
+            {{ $ruangan->appends(['search' => request('search'), 'sort' => $sort, 'direction' =>
+            $direction])->links() }}
         </div>
     </div>
 
@@ -199,7 +204,7 @@
                                         </div>
                                         <p class="mt-1 text-xs text-gray-500">Format file: .xlsx, .xls</p>
                                     </div>
-                                     <div>
+                                    <div>
                                         <label class="block text-sm font-medium text-gray-700">Template Excel</label>
                                         <a href="{{ route('template.ruangan.download') }}"
                                             class="mt-1 inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded text-sm">
