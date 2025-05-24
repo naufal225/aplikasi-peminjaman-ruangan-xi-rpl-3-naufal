@@ -50,9 +50,8 @@
 
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                    <select name="role" id="role" class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3" required>
+                    <select disabled name="role" id="role" class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3" required>
                         <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>User</option>
-                        <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
                     </select>
                 </div>
 

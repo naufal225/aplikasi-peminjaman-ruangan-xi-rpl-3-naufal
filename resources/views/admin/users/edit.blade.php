@@ -36,30 +36,29 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="nama_lengkap" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap" id="nama_lengkap" value="{{ old('nama_lengkap', $user->nama_lengkap) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                    <input type="text" name="nama_lengkap" id="nama_lengkap" value="{{ old('nama_lengkap', $user->nama_lengkap) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-3" required>
                 </div>
 
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                    <input type="text" name="username" id="username" value="{{ old('username', $user->username) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                    <input type="text" name="username" id="username" value="{{ old('username', $user->username) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-3" required>
                 </div>
 
                 <div>
                     <label for="id_card" class="block text-sm font-medium text-gray-700">ID Card</label>
-                    <input type="text" name="id_card" id="id_card" value="{{ old('id_card', $user->id_card) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                    <input type="text" name="id_card" id="id_card" value="{{ old('id_card', $user->id_card) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-3" required>
                 </div>
 
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                    <select name="role" id="role" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                    <select name="role" id="role" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3" required disabled>
                         <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>User</option>
-                        <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="jenis_pengguna" class="block text-sm font-medium text-gray-700">Jenis Pengguna</label>
-                    <select name="jenis_pengguna" id="jenis_pengguna" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                    <select name="jenis_pengguna" id="jenis_pengguna" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-3" required>
                         <option value="siswa" {{ old('jenis_pengguna', $user->jenis_pengguna) === 'siswa' ? 'selected' : '' }}>Siswa</option>
                         <option value="guru" {{ old('jenis_pengguna', $user->jenis_pengguna) === 'guru' ? 'selected' : '' }}>Guru</option>
                     </select>
@@ -67,12 +66,12 @@
 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700">Password (Kosongkan jika tidak ingin mengubah)</label>
-                    <input type="password" name="password" id="password" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    <input type="password" name="password" id="password" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-3">
                 </div>
 
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-3">
                 </div>
             </div>
 

@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Kelola Peminjaman & Pengembalian Ruangan</h1>
             <div class="flex flex-col sm:flex-row gap-3">
-               
+
                 <button type="button" onclick="openExportModal()" class="inline-flex items-center justify-center px-4 py-2 bg-green-600 border border-transparent rounded-md font-semibold text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -31,7 +31,7 @@
                 <input
                     type="text"
                     id="searchInput"
-                    placeholder="Cari berdasarkan nama pengguna atau ruangan..."
+                    placeholder="Cari..."
                     value="{{ $search }}"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
@@ -165,7 +165,7 @@
         function performSearch() {
             const searchValue = searchInput.value;
             const statusValue = document.getElementById('statusFilter').value;
-            
+
             fetch(`{{ route('peminjaman-pengembalian.index') }}?type={{ $type }}&search=${searchValue}&status=${statusValue}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -187,12 +187,12 @@
             const currentSort = '{{ $sort }}';
             const currentDirection = '{{ $direction }}';
             const statusValue = document.getElementById('statusFilter').value;
-            
+
             let newDirection = 'asc';
             if (column === currentSort && currentDirection === 'asc') {
                 newDirection = 'desc';
             }
-            
+
             fetch(`{{ route('peminjaman-pengembalian.index') }}?type={{ $type }}&sort=${column}&direction=${newDirection}&search={{ $search }}&status=${statusValue}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -210,26 +210,26 @@
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = `{{ url('peminjaman-ruangan') }}/${id}/status`;
-                
+
                 const csrfToken = document.createElement('input');
                 csrfToken.type = 'hidden';
                 csrfToken.name = '_token';
                 csrfToken.value = '{{ csrf_token() }}';
-                
+
                 const methodField = document.createElement('input');
                 methodField.type = 'hidden';
                 methodField.name = '_method';
                 methodField.value = 'PATCH';
-                
+
                 const statusField = document.createElement('input');
                 statusField.type = 'hidden';
                 statusField.name = 'status';
                 statusField.value = status;
-                
+
                 form.appendChild(csrfToken);
                 form.appendChild(methodField);
                 form.appendChild(statusField);
-                
+
                 document.body.appendChild(form);
                 form.submit();
             }
@@ -241,26 +241,26 @@
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = `{{ url('peminjaman-ruangan/pengembalian') }}/${id}/status`;
-                
+
                 const csrfToken = document.createElement('input');
                 csrfToken.type = 'hidden';
                 csrfToken.name = '_token';
                 csrfToken.value = '{{ csrf_token() }}';
-                
+
                 const methodField = document.createElement('input');
                 methodField.type = 'hidden';
                 methodField.name = '_method';
                 methodField.value = 'PATCH';
-                
+
                 const statusField = document.createElement('input');
                 statusField.type = 'hidden';
                 statusField.name = 'status';
                 statusField.value = status;
-                
+
                 form.appendChild(csrfToken);
                 form.appendChild(methodField);
                 form.appendChild(statusField);
-                
+
                 document.body.appendChild(form);
                 form.submit();
             }
@@ -269,12 +269,12 @@
         // Export modal
         function openExportModal() {
             document.getElementById('exportModal').classList.remove('hidden');
-            
+
             // Set default date range (current month)
             const now = new Date();
             const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
             const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-            
+
             document.getElementById('start_date').value = formatDatetimeLocal(firstDay);
             document.getElementById('end_date').value = formatDatetimeLocal(lastDay);
         }
@@ -289,7 +289,7 @@
             const day = String(date.getDate()).padStart(2, '0');
             const hours = String(date.getHours()).padStart(2, '0');
             const minutes = String(date.getMinutes()).padStart(2, '0');
-            
+
             return `${year}-${month}-${day}T${hours}:${minutes}`;
         }
 

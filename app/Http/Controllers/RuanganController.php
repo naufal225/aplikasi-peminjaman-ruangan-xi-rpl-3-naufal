@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\RuanganImport;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RuanganController extends Controller
 {
@@ -107,9 +109,50 @@ class RuanganController extends Controller
     {
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls',
+        ], [
+            "file.required" => "File wajib diisi.",
+            "file.file" => "File wajib berupa file.",
+            "file.mimes" => "File harus berupa file Excel (XLSX, XLS)."
         ]);
 
+        $request->file('file')->store('imports_data_user', 'public');
+
+        $importer = new RuanganImport();
+
+        $error = false;
+        $message = [];
+
+        Excel::import($importer, $request->file('file'));
+
+        $rows_count = $importer->getRowsCount();
+        $created_or_updated_rows = $importer->getCreatedOrUpdatedRowsCount();
+        $failed_rows = $importer->getFailedRows();
+
+        if ($created_or_updated_rows == 0 || $rows_count == 0) {
+            $error = true;
+            $message = "Gagal mengimport data, pastikan data valid.";
+        }
+
+        if ($error) {
+            return redirect()->route('users.index')
+                ->with('error', $message)
+                ->with('failed_rows', $failed_rows);
+        }
+
         return redirect()->route('ruangan.index')
-            ->with('success', 'Data ruangan berhasil diimpor');
+            ->with('success', $created_or_updated_rows . ' data ruangan berhasil diimpor')
+            ->with('failed_rows', $failed_rows);
+    }
+
+
+    public function downloadTemplate()
+    {
+        $filePath = public_path('/storage/templates/template_data_ruangan.xlsx');
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        return response()->download($filePath, 'template_data_ruangan.xlsx');
     }
 }

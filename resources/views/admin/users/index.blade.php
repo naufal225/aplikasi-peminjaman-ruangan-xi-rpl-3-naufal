@@ -81,8 +81,11 @@
                 <div class="ml-3">
                     <p class="text-sm font-medium">Ada beberapa kesalahan:</p>
                     <ul class="mt-1 text-sm list-disc list-inside">
-                        @foreach (session('failed_rows') as $row)
-                        <li>{{ $row }}</li>
+                        @foreach (session('failed_rows') as $failed)
+                        <li>
+                            <strong>Baris:</strong> {{ json_encode($failed['row']) }} <br>
+                            <strong>Error:</strong> {{ implode(', ', $failed['errors']) }}
+                        </li>
                         @endforeach
                     </ul>
                 </div>
@@ -247,13 +250,6 @@
             });
         }
 
-        // Delete confirmation
-        function confirmDelete(userId) {
-            if (confirm('Apakah Anda yakin ingin menghapus user ini?')) {
-                document.getElementById(`delete-form-${userId}`).submit();
-            }
-        }
-
         // Import modal
         function openImportModal() {
             document.getElementById('importModal').classList.remove('hidden');
@@ -270,7 +266,28 @@
                 if (flashMessage) {
                     flashMessage.remove();
                 }
-            }, 5000);
+            }, 10000);
         }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(userId) {
+    Swal.fire({
+        title: "Yakin mau hapus?",
+        text: "Data tidak bisa dikembalikan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#e3342f",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(`delete-form-${userId}`).submit();
+        }
+    });
+}
+
     </script>
 </x-layout>

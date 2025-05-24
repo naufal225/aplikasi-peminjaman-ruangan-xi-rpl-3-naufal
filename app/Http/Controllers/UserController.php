@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\UsersImport;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Importer;
@@ -171,18 +172,31 @@ class UserController extends Controller
         $created_or_updated_rows = $importer->getCreatedOrUpdatedRowsCount();
         $failed_rows = $importer->getFailedRows();
 
-         if($created_or_updated_rows == 0 || $rows_count == 0) {
-                $error = true;
-                $message = "Gagal mengimport data, pastikan data valid.";
-            }
+        if ($created_or_updated_rows == 0 || $rows_count == 0) {
+            $error = true;
+            $message = "Gagal mengimport data, pastikan data valid.";
+        }
 
-        if($error) {
+        if ($error) {
             return redirect()->route('users.index')
-                ->with('error', $message);
-        }   
+                ->with('error', $message)
+                ->with('failed_rows', $failed_rows);
+        }
 
         return redirect()->route('users.index')
-            ->with('success', 'Data user berhasil diimpor')
+            ->with('success', $created_or_updated_rows . ' data user berhasil diimpor')
             ->with('failed_rows', $failed_rows);
     }
+
+    public function downloadTemplate()
+    {
+        $filePath = public_path('/storage/templates/template_data_user.xlsx');
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        return response()->download($filePath, 'template_data_user.xlsx');
+    }
+
 }

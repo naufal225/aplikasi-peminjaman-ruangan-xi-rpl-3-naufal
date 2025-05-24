@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/ruangan/{ruangan}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
         Route::get('/ruangan/import', [RuanganController::class, 'importForm'])->name('ruangan.import.form');
         Route::post('/ruangan/import', [RuanganController::class, 'import'])->name('ruangan.import');
+        Route::get('/template/ruangan/download', [RuanganController::class, 'downloadTemplate'])->name('template.ruangan.download');
 
         Route::prefix('peminjaman-ruangan')->name('peminjaman-pengembalian.')->group(function () {
             Route::get('/', [PeminjamanPengembalianController::class, 'index'])->name('index');
