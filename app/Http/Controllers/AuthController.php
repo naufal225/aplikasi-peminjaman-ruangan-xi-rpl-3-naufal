@@ -49,7 +49,7 @@ class AuthController extends Controller
                 ->orWhere('id_card', $request->login)
                 ->first();
         } else {
-            $user = User::where('user_id', $request->login)->first();
+            $user = User::where('id_card', $request->login)->first();
         }
 
         // Check if user exists and password is correct

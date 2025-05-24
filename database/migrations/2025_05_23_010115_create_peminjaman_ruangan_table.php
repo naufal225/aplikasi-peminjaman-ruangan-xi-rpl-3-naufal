@@ -18,7 +18,8 @@ return new class extends Migration {
             $table->time('waktu_mulai');
             $table->integer('durasi_pinjam'); // dalam satuan JP
             $table->dateTime('waktu_selesai');
-            $table->enum('status', ['menunggu','disetujui','ditolak','selesai']); // menunggu, disetujui, ditolak, selesai
+            $table->text('keperluan');
+            $table->enum('status', ['menunggu','disetujui','dibatalkan','ditolak','selesai']); // menunggu, disetujui, ditolak, selesai
             $table->timestamps();
         });
     }

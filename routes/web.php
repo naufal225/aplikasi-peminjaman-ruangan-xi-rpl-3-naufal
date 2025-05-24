@@ -77,6 +77,11 @@ Route::middleware(['auth'])->group(function () {
 
     // User Routes
     Route::middleware(['role:user'])->group(function () {
+
+        Route::get('/user', function () {
+            return redirect()->route('user.dashboard');
+        });
+
         // User Dashboard
         Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 
@@ -84,10 +89,10 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('user/peminjaman')->name('user.peminjaman.')->group(function () {
             Route::get('/', [UserPeminjamanController::class, 'index'])->name('index');
             Route::get('/create', [UserPeminjamanController::class, 'create'])->name('create');
+            Route::get('/check-availability', [UserPeminjamanController::class, 'checkAvailability'])->name('check-availability');
             Route::post('/', [UserPeminjamanController::class, 'store'])->name('store');
             Route::get('/{id}', [UserPeminjamanController::class, 'show'])->name('show');
             Route::patch('/{id}/cancel', [UserPeminjamanController::class, 'cancel'])->name('cancel');
-            Route::get('/check-availability', [UserPeminjamanController::class, 'checkAvailability'])->name('check-availability');
         });
 
         // User Pengembalian Routes

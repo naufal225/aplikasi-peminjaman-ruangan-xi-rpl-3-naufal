@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <label class="text-sm font-medium text-gray-500">Tanggal Pengajuan</label>
-                        <p class="text-sm text-gray-900">{{ $peminjaman->created_at ? $peminjaman->created_at->format('d M Y H:i') : '25 Mei 2025 08:30' }}</p>
+                        <p class="text-sm text-gray-900">{{ $peminjaman->created_at ? $peminjaman->created_at_formatted : '25 Mei 2025 08:30' }}</p>
                     </div>
                     <div>
                         <label class="text-sm font-medium text-gray-500">Status</label>
@@ -72,15 +72,15 @@
                 <div class="space-y-3">
                     <div>
                         <label class="text-sm font-medium text-gray-500">Tanggal</label>
-                        <p class="text-sm text-gray-900">{{ $peminjaman->tanggal ? $peminjaman->tanggal->format('d M Y') : '25 Mei 2025' }}</p>
+                        <p class="text-sm text-gray-900">{{ $peminjaman->tanggal ? $peminjaman->tanggal_formatted : '25 Mei 2025' }}</p>
                     </div>
                     <div>
                         <label class="text-sm font-medium text-gray-500">Waktu Mulai</label>
-                        <p class="text-sm text-gray-900">{{ $peminjaman->waktu_mulai ?? '09:00' }}</p>
+                        <p class="text-sm text-gray-900">{{ $peminjaman->waktu_mulai_formatted ?? '09:00' }}</p>
                     </div>
                     <div>
                         <label class="text-sm font-medium text-gray-500">Waktu Selesai</label>
-                        <p class="text-sm text-gray-900">{{ $peminjaman->waktu_selesai ?? '12:00' }}</p>
+                        <p class="text-sm text-gray-900">{{ $peminjaman->waktu_selesai_formatted ?? '12:00' }}</p>
                     </div>
                     <div>
                         <label class="text-sm font-medium text-gray-500">Durasi</label>
@@ -107,7 +107,7 @@
                     </button>
                 </form>
             @endif
-            
+
             @if(($peminjaman->status ?? 'disetujui') === 'disetujui')
                 <a href="{{ route('user.pengembalian.create', $peminjaman->peminjaman_id ?? 1) }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                     Ajukan Pengembalian

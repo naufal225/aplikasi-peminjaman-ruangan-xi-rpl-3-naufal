@@ -45,7 +45,7 @@ class UserPeminjamanController extends Controller
 
         // If it's an AJAX request, return only the table content
         if ($request->ajax()) {
-            return view('user.peminjaman.table', compact('peminjaman'))->render();
+            return view('user.peminjaman.table', compact('peminjaman'));
         }
 
         return view('user.peminjaman.index', compact('peminjaman', 'status', 'search'));
@@ -72,7 +72,7 @@ class UserPeminjamanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'ruangan_id' => 'required|exists:ruangan,id',
+            'ruangan_id' => 'required|exists:ruangan,ruangan_id',
             'tanggal' => 'required|date|after_or_equal:today',
             'waktu_mulai' => 'required',
             'durasi_pinjam' => 'required|integer|min:1|max:24',
@@ -127,7 +127,7 @@ class UserPeminjamanController extends Controller
             'ruangan_id' => $request->ruangan_id,
             'tanggal' => $request->tanggal,
             'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $waktuSelesai->format('H:i'),
+            'waktu_selesai' => $waktuSelesai->format('Y-m-d H:m:s'),
             'durasi_pinjam' => $request->durasi_pinjam,
             'keperluan' => $request->keperluan,
             'status' => 'menunggu',
