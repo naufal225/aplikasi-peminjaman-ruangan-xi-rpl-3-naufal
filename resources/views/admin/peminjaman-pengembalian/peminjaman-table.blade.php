@@ -96,6 +96,7 @@
                             'disetujui' => 'bg-green-100 text-green-800',
                             'ditolak' => 'bg-red-100 text-red-800',
                             'selesai' => 'bg-blue-100 text-blue-800',
+                            'dibatalkan' => 'bg-gray-200 text-gray-600', 
                         ][$peminjaman->status];
                     @endphp
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusClass }}">

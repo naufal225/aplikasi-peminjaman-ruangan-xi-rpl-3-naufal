@@ -158,11 +158,10 @@ class PeminjamanPengembalianController extends Controller
         $peminjaman = PeminjamanRuangan::findOrFail($id);
         $peminjaman->status = $request->status;
 
-        $peminjaman->ruangan->update([
-            'status' => 'tidak_tersedia'
-        ]);
-
-        $peminjaman->ruangan->save();
+        if($request->status == 'disetujui') {
+            $peminjaman->ruangan->status = 'tidak_tersedia';
+             $peminjaman->ruangan->save(); 
+        }
 
         $peminjaman->save();
 

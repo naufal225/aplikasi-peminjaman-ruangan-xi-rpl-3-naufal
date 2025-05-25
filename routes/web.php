@@ -6,6 +6,7 @@ use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PeminjamanPengembalianController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RuanganUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Row;
@@ -104,6 +105,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create/{peminjamanId}', [UserPengembalianController::class, 'create'])->name('create');
             Route::post('/', [UserPengembalianController::class, 'store'])->name('store');
             Route::get('/{id}', [UserPengembalianController::class, 'show'])->name('show');
+        });
+
+        Route::prefix('user')->group(function() {
+            Route::get('/ruangan', [RuanganUserController::class, 'index'])->name('user.ruangan.index');
+            Route::get('/ruangan/{ruangan}', [RuanganUserController::class, 'show'])->name('user.ruangan.show');
         });
     });
 

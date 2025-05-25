@@ -147,8 +147,6 @@
     if (ruanganId && tanggal) {
         availabilityInfo.innerHTML = '<p class="text-sm text-gray-500">Memeriksa ketersediaan...</p>';
 
-        console.log(tanggal)
-
         fetch(`/user/peminjaman/check-availability?ruangan_id=${ruanganId}&tanggal=${tanggal}`)
             .then(response => response.json())
             .then(data => {

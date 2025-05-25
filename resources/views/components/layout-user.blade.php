@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'User Dashboard' }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -24,7 +24,7 @@
             }
         }
     </script>
-    
+
     <style>
         /* Hide scrollbar for Chrome, Safari and Opera */
         .no-scrollbar::-webkit-scrollbar {
@@ -41,7 +41,7 @@
     <div class="flex h-screen overflow-hidden">
         <!-- Mobile Sidebar Backdrop -->
         <div id="sidebar-backdrop" class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden hidden"></div>
-        
+
         <!-- Sidebar -->
         <div id="sidebar" class="fixed inset-y-0 left-0 z-30 w-64 transform -translate-x-full bg-white shadow-lg transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:h-screen">
             <div class="flex flex-col h-full">
@@ -56,7 +56,7 @@
                         <h2 class="ml-3 text-xl font-bold text-gray-800">User Panel</h2>
                     </div>
                 </div>
-                
+
                 <!-- Sidebar Navigation -->
                 <nav class="mt-6 flex-1 overflow-y-auto no-scrollbar">
                     <div class="px-6 py-3">
@@ -67,7 +67,17 @@
                             Dashboard
                         </a>
                     </div>
-                    
+
+                    <div class="px-6 py-3">
+                        <a href="{{ route('user.ruangan.index') }}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-200 {{ request()->routeIs('user.ruangan.*') ? 'bg-blue-100 text-blue-700' : '' }}">
+                            <!-- Icon untuk Ruangan - Building/Office icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            Daftar Ruangan
+                        </a>
+                    </div>
+
                     <div class="px-6 py-3">
                         <a href="{{ route('user.peminjaman.index') }}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {{ request()->routeIs('user.peminjaman.*') ? 'bg-blue-100 text-blue-700' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +86,7 @@
                             Peminjaman Ruangan
                         </a>
                     </div>
-                    
+
                     <div class="px-6 py-3">
                         <a href="{{ route('user.pengembalian.index') }}" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100 {{ request()->routeIs('user.pengembalian.*') ? 'bg-blue-100 text-blue-700' : '' }}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,7 +111,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
                             </svg>
                         </button>
-                        
+
                         <h1 class="ml-3 text-lg font-semibold text-gray-800 lg:text-2xl">
                             @if(request()->routeIs('user.dashboard'))
                                 Dashboard
@@ -114,7 +124,7 @@
                             @endif
                         </h1>
                     </div>
-                    
+
                     <div class="relative" id="profile-dropdown-container">
                         <button id="profile-dropdown-button" class="flex items-center space-x-2 focus:outline-none">
                             <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
@@ -125,7 +135,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        
+
                         <!-- Profile dropdown menu -->
                         <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden z-50">
                             <div class="py-1">
@@ -167,7 +177,7 @@
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const sidebar = document.getElementById('sidebar');
             const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-            
+
             if (mobileMenuButton && sidebar && sidebarBackdrop) {
                 mobileMenuButton.addEventListener('click', function() {
                     // Toggle sidebar
@@ -181,7 +191,7 @@
                         document.body.classList.remove('overflow-hidden');
                     }
                 });
-                
+
                 // Close sidebar when clicking on backdrop
                 sidebarBackdrop.addEventListener('click', function() {
                     sidebar.classList.add('-translate-x-full');
@@ -189,17 +199,17 @@
                     document.body.classList.remove('overflow-hidden');
                 });
             }
-            
+
             // Profile dropdown functionality
             const profileButton = document.getElementById('profile-dropdown-button');
             const profileDropdown = document.getElementById('profile-dropdown');
             const profileContainer = document.getElementById('profile-dropdown-container');
-            
+
             if (profileButton && profileDropdown) {
                 profileButton.addEventListener('click', function() {
                     profileDropdown.classList.toggle('hidden');
                 });
-                
+
                 // Close dropdown when clicking outside
                 document.addEventListener('click', function(event) {
                     if (!profileContainer.contains(event.target)) {
@@ -207,7 +217,7 @@
                     }
                 });
             }
-            
+
             // Handle window resize
             window.addEventListener('resize', function() {
                 if (window.innerWidth >= 1024) { // lg breakpoint
