@@ -44,7 +44,7 @@
                 </div>
                 <nav class="flex-1 mt-5 px-4 overflow-y-auto">
                     <a href="{{ url('/') }}"
-                        class="flex items-center px-4 py-3 {{ request()->is('/') ? 'text-gray-800 bg-gray-100' : 'text-gray-600 hover:bg-gray-100' }} rounded-lg">
+                        class="flex items-center px-4 py-3 {{ request()->routeIs('dashboard') ? 'text-gray-800 bg-gray-100' : 'text-gray-600 hover:bg-gray-100' }} rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

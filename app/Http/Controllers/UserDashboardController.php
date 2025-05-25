@@ -18,41 +18,40 @@ class UserDashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         // Get user's active borrowings
         $peminjamanAktif = PeminjamanRuangan::where('user_id', $user->user_id)
             ->where('status', 'disetujui')
             ->where('tanggal', '>=', now()->toDateString())
             ->count();
-        
+
         // Get pending approvals
         $menungguPersetujuan = PeminjamanRuangan::where('user_id', $user->user_id)
             ->where('status', 'menunggu')
             ->count();
-        
+
         // Get borrowing history
         $riwayatPeminjaman = PeminjamanRuangan::where('user_id', $user->user_id)
-            ->whereIn('status', ['selesai', 'ditolak'])
+            ->whereIn('status', ['selesai'])
             ->count();
-        
+
         // Get upcoming reservations
         $upcomingReservations = PeminjamanRuangan::with('ruangan')
             ->where('user_id', $user->user_id)
-            ->where('tanggal', '>=', now()->toDateString())
             ->whereIn('status', ['disetujui', 'menunggu'])
-            ->orderBy('tanggal', 'asc')
-            ->orderBy('waktu_mulai', 'asc')
+            ->orderBy('tanggal', 'desc')
+            ->orderBy('waktu_mulai', 'desc')
             ->limit(5)
             ->get();
-        
+
         // Get available rooms for today
         $availableRooms = Ruangan::where('status', 'tersedia')
             ->limit(6)
             ->get();
-        
+
         return view('user.dashboard', compact(
             'peminjamanAktif',
-            'menungguPersetujuan', 
+            'menungguPersetujuan',
             'riwayatPeminjaman',
             'upcomingReservations',
             'availableRooms'

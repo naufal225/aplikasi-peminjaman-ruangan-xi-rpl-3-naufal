@@ -12,14 +12,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $now = Carbon::now();
         // Get counts for stats cards
-        $pengajuanPeminjaman = PeminjamanRuangan::count();
+        $pengajuanPeminjaman = PeminjamanRuangan::whereMonth('created_at', $now->month)->whereYear('created_at', $now->year)->count();
 
-        $pengajuanPengembalian = PengembalianRuangan::count();
+        $pengajuanPengembalian = PengembalianRuangan::whereMonth('created_at', $now->month)->whereYear('created_at', $now->year)->count();
 
-        $peminjaman = PeminjamanRuangan::whereIn('status', ['disetujui', 'selesai'])->count();
+        $peminjaman = PeminjamanRuangan::whereMonth('created_at', $now->month)->whereYear('created_at', $now->year)->whereIn('status', ['disetujui', 'selesai'])->count();
 
-        $pengembalian = PengembalianRuangan::where('status', 'disetujui')->count();
+        $pengembalian = PengembalianRuangan::whereMonth('created_at', $now->month)->whereYear('created_at', $now->year)->where('status', 'disetujui')->count();
 
         // Calculate percentage changes from last month
         $lastMonthStart = Carbon::now()->subMonth()->startOfMonth();

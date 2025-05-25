@@ -2,7 +2,7 @@
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Detail Pengembalian</h1>
-            <a href="{{ route('user.pengembalian.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+            <a href="{{ url()->previous() }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
@@ -31,7 +31,7 @@
                                     'belum_disetujui' => 'bg-yellow-100 text-yellow-800',
                                     'disetujui' => 'bg-green-100 text-green-800',
                                 ][$pengembalian->status ?? 'disetujui'];
-                                
+
                                 $statusText = [
                                     'belum_disetujui' => 'Belum Disetujui',
                                     'disetujui' => 'Disetujui',
@@ -89,7 +89,7 @@
                                     'rusak_ringan' => 'bg-yellow-100 text-yellow-800',
                                     'rusak_berat' => 'bg-red-100 text-red-800',
                                 ][$pengembalian->kondisi_ruangan ?? 'baik'];
-                                
+
                                 $kondisiText = [
                                     'baik' => 'Baik',
                                     'rusak_ringan' => 'Rusak Ringan',

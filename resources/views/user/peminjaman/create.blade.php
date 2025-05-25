@@ -147,9 +147,12 @@
     if (ruanganId && tanggal) {
         availabilityInfo.innerHTML = '<p class="text-sm text-gray-500">Memeriksa ketersediaan...</p>';
 
+        console.log(tanggal)
+
         fetch(`/user/peminjaman/check-availability?ruangan_id=${ruanganId}&tanggal=${tanggal}`)
             .then(response => response.json())
             .then(data => {
+
                 if (data.error) {
                     availabilityInfo.innerHTML = `<p class="text-sm text-red-500">${data.error}</p>`;
                     return;
@@ -157,21 +160,30 @@
 
                 const bookings = data.bookings;
 
+                console.log(bookings)
+
                 // Misal slot jam yang dicek adalah:
                 const slots = [
-                    {start: '07:00', end: '09:00'},
-                    {start: '09:00', end: '12:00'},
-                    {start: '12:00', end: '15:00'},
-                    {start: '15:00', end: '17:00'}
-                ];
+    { start: '07:00', end: '08:00' },
+    { start: '08:00', end: '09:00' },
+    { start: '09:00', end: '10:00' },
+    { start: '10:00', end: '11:00' },
+    { start: '11:00', end: '12:00' },
+    { start: '12:00', end: '13:00' },
+    { start: '13:00', end: '14:00' },
+    { start: '14:00', end: '15:00' },
+    { start: '15:00', end: '16:00' },
+    { start: '16:00', end: '17:00' }
+];
 
                 // Fungsi bantu untuk cek apakah slot bertabrakan dengan booking
                 function isBooked(slotStart, slotEnd) {
                     for (const booking of bookings) {
-                        if (
-                            !(slotEnd <= booking.waktu_mulai || slotStart >= booking.waktu_selesai)
-                        ) {
-                            return true; // Tabrakan waktu
+                        const waktuMulai = booking.waktu_mulai.substring(0, 5); // Ambil "HH:mm"
+                        const waktuSelesai = booking.waktu_selesai.substring(11, 16); // Ambil "HH:mm" dari "YYYY-MM-DD HH:mm:ss"
+
+                        if (!(slotEnd <= waktuMulai || slotStart >= waktuSelesai)) {
+                            return true; // Ada tabrakan waktu
                         }
                     }
                     return false;

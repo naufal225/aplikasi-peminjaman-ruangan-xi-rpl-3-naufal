@@ -107,7 +107,6 @@ class PeminjamanPengembalianController extends Controller
             'durasi_pinjam.min' => 'Durasi minimal peminjaman adalah 1 jam.',
         ]);
 
-
         // Calculate waktu_selesai based on waktu_mulai and durasi_pinjam
         $tanggal = $validated['tanggal'];
         $waktuMulai = $validated['waktu_mulai'];
@@ -129,6 +128,7 @@ class PeminjamanPengembalianController extends Controller
         if ($conflictingBookings) {
             return back()->withErrors(['conflict' => 'Ruangan sudah dibooking pada waktu tersebut.'])->withInput();
         }
+
 
         // Create the booking
         PeminjamanRuangan::create([
@@ -157,6 +157,13 @@ class PeminjamanPengembalianController extends Controller
 
         $peminjaman = PeminjamanRuangan::findOrFail($id);
         $peminjaman->status = $request->status;
+
+        $peminjaman->ruangan->update([
+            'status' => 'tidak_tersedia'
+        ]);
+
+        $peminjaman->ruangan->save();
+
         $peminjaman->save();
 
         return redirect()->route('peminjaman-pengembalian.index')
@@ -176,12 +183,19 @@ class PeminjamanPengembalianController extends Controller
         $pengembalian = PengembalianRuangan::findOrFail($id);
         $pengembalian->status = $request->status;
 
+        if($request->status == 'disetujui') {
+            $pengembalian->ruangan->status = 'tidak_tersedia';
+        }
+
         if ($request->status === 'disetujui') {
             $pengembalian->tanggal_disetujui = now();
 
             // Update the related peminjaman status to 'selesai'
             $peminjaman = $pengembalian->peminjaman;
             $peminjaman->status = 'selesai';
+
+            $pengembalian->ruangan->status = 'tersedia';
+
             $peminjaman->save();
         }
 

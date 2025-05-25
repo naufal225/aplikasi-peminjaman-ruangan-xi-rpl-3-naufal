@@ -97,12 +97,27 @@ class UserPeminjamanController extends Controller
             'keperluan.max' => 'Keperluan tidak boleh lebih dari 500 karakter.',
         ]);
 
-
         $user = Auth::user();
 
+        $tanggal = Carbon::parse($request->tanggal);
+
         // Calculate end time
-        $waktuMulai = Carbon::createFromFormat('H:i', $request->waktu_mulai);
-        $waktuSelesai = $waktuMulai->copy()->addHours((int)$request->durasi_pinjam);
+        $waktuMulai = Carbon::parse($tanggal->format('Y-m-d') . ' ' . $request->waktu_mulai);
+        $waktuSelesai = $waktuMulai->copy()->addHours((int) $request->durasi_pinjam);
+
+        $jamBatas = Carbon::parse($tanggal->format('Y-m-d') . ' 22:00:00');
+
+        if ($waktuSelesai > $jamBatas) {
+            return back()->withErrors([
+                'conflict' => 'Durasi peminjaman tidak boleh lebih dari jam 10 malam ' . $tanggal->locale('id')->translatedFormat("d F Y")
+            ])->withInput();
+        }
+
+        if ( Carbon::parse($tanggal->format('Y-m-d') . ' ' . $waktuMulai->format('H:i:s')) >= $jamBatas) {
+            return back()->withErrors([
+                'conflict' => 'Waktu peminjaman tidak boleh lebih dari jam 10 malam ' . $tanggal->locale('id')->translatedFormat("d F Y")
+            ])->withInput();
+        }
 
         // Check for conflicts
         $conflict = PeminjamanRuangan::where('ruangan_id', $request->ruangan_id)
@@ -127,7 +142,7 @@ class UserPeminjamanController extends Controller
             'ruangan_id' => $request->ruangan_id,
             'tanggal' => $request->tanggal,
             'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $waktuSelesai->format('Y-m-d H:m:s'),
+            'waktu_selesai' => Carbon::parse($tanggal->format('Y-m-d') . ' ' . $waktuSelesai->format('H:i:s')),
             'durasi_pinjam' => $request->durasi_pinjam,
             'keperluan' => $request->keperluan,
             'status' => 'menunggu',

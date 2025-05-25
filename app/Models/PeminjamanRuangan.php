@@ -43,7 +43,7 @@ class PeminjamanRuangan extends Model
 
     public function getWaktuSelesaiFormattedAttribute()
     {
-        return Carbon::parse($this->waktu_mulai)->locale('id')->translatedFormat('H:i');
+        return Carbon::parse($this->waktu_selesai)->locale('id')->translatedFormat('H:i');
     }
 
     public function getCreatedAtFormattedAttribute() {

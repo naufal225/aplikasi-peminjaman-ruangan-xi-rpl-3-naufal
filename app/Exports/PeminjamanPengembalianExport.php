@@ -34,7 +34,8 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
                 ->map(function ($item) {
                     return [
                         'Tipe' => 'Peminjaman',
-                        'Nama User' => $item->user->name,
+                         'Nama User' => $item->user->nama_lengkap,
+                        'ID Card' => $item->user->id_card,
                         'Ruangan' => $item->ruangan->nama_ruangan ?? '-',
                         'Tanggal' => $item->tanggal,
                         'Waktu Mulai' => $item->waktu_mulai,
@@ -59,11 +60,12 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
                 ->map(function ($item) {
                     return [
                         'Tipe' => 'Pengembalian',
-                        'Nama User' => $item->user->name,
+                        'Nama User' => $item->user->nama_lengkap,
+                        'ID Card' => $item->user->id_card,
                         'Ruangan' => $item->peminjaman->ruangan->nama_ruangan ?? '-',
                         'Tanggal' => $item->peminjaman->tanggal ?? '-',
                         'Waktu Mulai' => $item->peminjaman->waktu_mulai ?? '-',
-                        'Durasi (JP)' => $item->peminjaman->durasi_pinjam ?? '-',
+                        'Durasi (JP)' => $item->peminjaman->durasi_pinjam . " jam" ?? '-',
                         'Waktu Selesai' => $item->peminjaman->waktu_selesai ?? '-',
                         'Keperluan' => $item->peminjaman->keperluan ?? '-',
                         'Status' => $item->status,
@@ -83,7 +85,7 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
     public function headings(): array
     {
         return [
-            'Tipe', 'Nama User', 'Ruangan', 'Tanggal', 'Waktu Mulai',
+            'Tipe', 'Nama User', 'ID Card', 'Ruangan', 'Tanggal', 'Waktu Mulai',
             'Durasi (JP)', 'Waktu Selesai', 'Keperluan', 'Status',
             'Kondisi Ruangan', 'Tanggal Pengajuan', 'Tanggal Disetujui', 'Tanggal Buat'
         ];
