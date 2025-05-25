@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\RuanganImport;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RuanganController extends Controller
@@ -39,6 +40,7 @@ class RuanganController extends Controller
             'nama_ruangan' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
             'kapasitas' => 'required|integer|min:1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5140'
         ], [
             'nama_ruangan.required' => 'Nama ruangan wajib diisi.',
             'nama_ruangan.string' => 'Nama ruangan harus berupa teks.',
@@ -51,13 +53,37 @@ class RuanganController extends Controller
             'kapasitas.required' => 'Kapasitas ruangan wajib diisi.',
             'kapasitas.integer' => 'Kapasitas harus berupa angka bulat.',
             'kapasitas.min' => 'Kapasitas minimal adalah 1.',
+
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar tidak valid. Hanya menerima file dengan format: jpeg, png, jpg, gif.',
+            'image.max' => 'Ukuran gambar tidak boleh lebih dari 5 MB.'
         ]);
 
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+
+            $fileName = $originalName . "." . $extension;
+            $i = 1;
+
+            while(Storage::disk('public')->exists('ruangan/'. $fileName)) {
+                $fileName = $originalName . "(" . $i .")" . $extension;
+                $i++;
+            }
+
+            $path = $file->storeAs('ruangan', $fileName, 'public');
+            $validated['file_gambar'] = $path;
+        }
 
         Ruangan::create($validated);
 
         return redirect()->route('ruangan.index')
             ->with('success', 'Ruangan berhasil ditambahkan');
+    }
+    public function show(Ruangan $ruangan)
+    {
+        return view('admin.ruangan.show', compact('ruangan'));
     }
 
     public function edit(Ruangan $ruangan)
@@ -71,6 +97,7 @@ class RuanganController extends Controller
             'nama_ruangan' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
             'kapasitas' => 'required|integer|min:1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5140'
         ], [
             'nama_ruangan.required' => 'Nama ruangan wajib diisi.',
             'nama_ruangan.string' => 'Nama ruangan harus berupa teks.',
@@ -83,7 +110,32 @@ class RuanganController extends Controller
             'kapasitas.required' => 'Kapasitas ruangan wajib diisi.',
             'kapasitas.integer' => 'Kapasitas harus berupa angka bulat.',
             'kapasitas.min' => 'Kapasitas minimal adalah 1.',
+
+            'image.image' => 'File harus berupa gambar.',
+            'image.mimes' => 'Format gambar tidak valid. Hanya menerima file dengan format: jpeg, png, jpg, gif.',
+            'image.max' => 'Ukuran gambar tidak boleh lebih dari 5 MB.'
         ]);
+
+        if ($request->hasFile('image')) {
+            $file = $request->image;
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+
+            if($ruangan->file_gambar && Storage::disk('public')->exists($ruangan->file_gambar)) {
+                Storage::disk('public')->delete($ruangan->file_gambar);
+            }
+
+            $fileName = $originalName . "." . $extension;
+            $i = 1;
+
+            while(Storage::disk('public')->exists('ruangan/'. $fileName)) {
+                $fileName = $originalName . "(" . $i .")" . $extension;
+                $i++;
+            }
+
+            $path = $file->storeAs('ruangan', $fileName, 'public');
+            $validated['file_gambar'] = $path;
+        }
 
 
         $ruangan->update($validated);

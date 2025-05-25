@@ -160,7 +160,7 @@ class PeminjamanPengembalianController extends Controller
 
         if($request->status == 'disetujui') {
             $peminjaman->ruangan->status = 'tidak_tersedia';
-             $peminjaman->ruangan->save(); 
+             $peminjaman->ruangan->save();
         }
 
         $peminjaman->save();
@@ -240,5 +240,23 @@ class PeminjamanPengembalianController extends Controller
         );
 
         return Excel::download($export, 'laporan_peminjaman_pengembalian.xlsx');
+    }
+
+     public function checkAvailability(Request $request)
+    {
+        $ruanganId = $request->get('ruangan_id');
+        $tanggal = $request->get('tanggal');
+
+        if (!$ruanganId || !$tanggal) {
+            return response()->json(['error' => 'Missing parameters'], 400);
+        }
+
+        $bookings = PeminjamanRuangan::where('ruangan_id', $ruanganId)
+            ->where('tanggal', $tanggal)
+            ->where('status', '!=', 'ditolak')
+            ->select('waktu_mulai', 'waktu_selesai', 'status')
+            ->get();
+
+        return response()->json(['bookings' => $bookings]);
     }
 }

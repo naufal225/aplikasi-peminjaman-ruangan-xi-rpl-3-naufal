@@ -4,11 +4,17 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden group">
                 <!-- Image Placeholder -->
                 <div class="relative h-48 bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-600 dark:to-blue-800">
+                    @if($room->file_gambar)
+
+                        <img src="{{ asset('storage/' . $room->file_gambar) }}" alt="Foto Ruangan" class="w-full h-full object-cover">
+
+                        @else
                     <div class="absolute inset-0 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                     </div>
+                    @endif
 
                     <!-- Status Badge -->
                     {{-- <div class="absolute top-3 right-3">

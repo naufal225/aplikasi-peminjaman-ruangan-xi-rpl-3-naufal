@@ -12,7 +12,7 @@ class Ruangan extends Model
     protected $primaryKey = 'ruangan_id';
 
     protected $fillable = [
-        'nama_ruangan', 'lokasi', 'kapasitas', 'status',
+        'nama_ruangan', 'lokasi', 'kapasitas', 'status', 'file_gambar',
     ];
 
     public function peminjaman_ruangan()

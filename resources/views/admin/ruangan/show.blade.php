@@ -1,30 +1,24 @@
-<x-layout-user>
+<x-layout>
     <div class="max-w-4xl mx-auto">
         <!-- Header -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 transition-colors duration-200">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('user.ruangan.index') }}"
-                        class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 transition-colors duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    <a href="{{ url()->previous() }}" class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                         Kembali ke Daftar
                     </a>
                 </div>
-{{-- 
-                @if($ruangan->status === 'tersedia')
-                <button
-                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 transition-colors duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Ajukan Peminjaman
-                </button>
+
+                {{-- @if($ruangan->status === 'tersedia')
+                    <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Ajukan Peminjaman
+                    </button>
                 @endif --}}
             </div>
 
@@ -35,20 +29,14 @@
             <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Image Gallery -->
-                <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-200">
-                    <div
-                        class="relative h-64 md:h-80 bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-600 dark:to-blue-800">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-200">
+                    <div class="relative h-64 md:h-80 bg-gradient-to-br from-blue-400 to-blue-600 dark:from-blue-600 dark:to-blue-800">
                         @if($ruangan->file_gambar)
-                        <img src="{{ asset('storage/' . $ruangan->file_gambar) }}" alt="Foto Ruangan"
-                            class="w-full h-full object-cover">
-
+                        <img src="{{ asset('storage/' . $ruangan->file_gambar) }}" alt="Foto Ruangan" class="w-full h-full object-cover">
                         @else
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white opacity-80" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-white opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
                         </div>
 
@@ -66,40 +54,33 @@
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-200">
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Deskripsi Ruangan</h2>
                     <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                        {{ $ruangan->nama_ruangan }} adalah ruangan yang berlokasi di {{ $ruangan->lokasi }} dengan
-                        kapasitas maksimal {{ $ruangan->kapasitas }} orang.
+                        {{ $ruangan->nama_ruangan }} adalah ruangan yang berlokasi di {{ $ruangan->lokasi }} dengan kapasitas maksimal {{ $ruangan->kapasitas }} orang.
                     </p>
                 </div>
 
                 <!-- Availability Checker -->
-                <div
-                    class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-200">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-colors duration-200">
                     <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-6 w-6 mr-3 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             Cek Ketersediaan Ruangan
                         </h2>
 
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="flex-1">
-                                <label for="tanggal"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih
-                                    Tanggal</label>
-                                <input type="date" id="tanggal" value="{{ date('Y-m-d') }}" min="{{ date('Y-m-d') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200">
+                                <label for="tanggal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih Tanggal</label>
+                                <input type="date"
+                                       id="tanggal"
+                                       value="{{ date('Y-m-d') }}"
+                                       min="{{ date('Y-m-d') }}"
+                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200">
                             </div>
                             <div class="flex items-end">
-                                <button onclick="checkAvailability()"
-                                    class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                <button onclick="checkAvailability()" class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-colors duration-200 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                     </svg>
                                     Refresh
                                 </button>
@@ -109,13 +90,9 @@
 
                     <div id="availabilityInfo" class="p-6">
                         <div class="flex items-center justify-center py-8">
-                            <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-blue-600 dark:text-blue-400"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
+                            <svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
                             <span class="text-sm text-gray-600 dark:text-gray-400">Memuat ketersediaan...</span>
                         </div>
@@ -131,8 +108,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-gray-600 dark:text-gray-400">Kapasitas</span>
-                            <span class="font-medium text-gray-900 dark:text-white">{{ $ruangan->kapasitas }}
-                                orang</span>
+                            <span class="font-medium text-gray-900 dark:text-white">{{ $ruangan->kapasitas }} orang</span>
                         </div>
 
                         <div class="flex items-center justify-between">
@@ -142,8 +118,7 @@
 
                         <div class="flex items-center justify-between">
                             <span class="text-gray-600 dark:text-gray-400">Status</span>
-                            <span
-                                class="font-medium {{ $ruangan->status === 'tersedia' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                            <span class="font-medium {{ $ruangan->status === 'tersedia' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
                                 {{ ucfirst($ruangan->status) }}
                             </span>
                         </div>
@@ -194,7 +169,7 @@
                     </div>
                 `;
 
-                fetch(`/user/peminjaman/check-availability?ruangan_id=${ruanganId}&tanggal=${tanggal}`)
+                fetch(`/peminjaman-ruangan/check-availability?ruangan_id=${ruanganId}&tanggal=${tanggal}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.error) {
@@ -400,4 +375,4 @@
             window.checkAvailability = checkAvailability;
         });
     </script>
-</x-layout-user>
+</x-layout>

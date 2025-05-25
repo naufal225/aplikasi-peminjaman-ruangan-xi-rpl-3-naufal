@@ -158,7 +158,7 @@
     </div>
 
     <!-- Available Rooms -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    {{-- <div class="bg-white rounded-lg shadow-md overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-800">Ruangan Tersedia Hari Ini</h2>
         </div>
@@ -226,5 +226,5 @@
                 Lihat Semua Ruangan →
             </a>
         </div>
-    </div>
+    </div> --}}
 </x-layout-user>
