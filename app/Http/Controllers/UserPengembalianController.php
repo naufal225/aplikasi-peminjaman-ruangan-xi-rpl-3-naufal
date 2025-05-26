@@ -103,7 +103,7 @@ class UserPengembalianController extends Controller
         $peminjaman = PeminjamanRuangan::where('peminjaman_id', $request->peminjaman_id)
             ->where('user_id', $user->user_id)
             ->where('status', 'disetujui')
-            ->firstOrFail();
+            ->first();
 
         // Check if return already exists
         $existingReturn = PengembalianRuangan::where('peminjaman_id', $request->peminjaman_id)->first();

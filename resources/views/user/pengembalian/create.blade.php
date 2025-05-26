@@ -36,15 +36,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <p class="text-sm text-gray-500">Ruangan</p>
-                    <p class="text-sm font-medium text-gray-900">Ruang Rapat Utama (Lantai 2, Gedung A)</p>
+                    <p class="text-sm font-medium text-gray-900">{{ $peminjaman->ruangan->nama_ruangan }}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Tanggal Peminjaman</p>
-                    <p class="text-sm font-medium text-gray-900">25 Mei 2025</p>
+                    <p class="text-sm font-medium text-gray-900">{{$peminjaman->tanggal_formatted}}</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Waktu Peminjaman</p>
-                    <p class="text-sm font-medium text-gray-900">09:00 - 12:00 (3 jam)</p>
+                    <p class="text-sm font-medium text-gray-900">{{ $peminjaman->waktu_mulai_formatted }} - {{ $peminjaman->waktu_selesai_formatted }} ({{ $peminjaman->durasi_pinjam }} jam)</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-500">Status Peminjaman</p>
@@ -55,9 +55,9 @@
             </div>
         </div>
 
-        <form action="/user/pengembalian" method="POST">
+        <form action="{{ route('user.pengembalian.store') }}" method="POST">
             @csrf
-            <input type="hidden" name="peminjaman_id" value="{{ $peminjamanId ?? 1 }}">
+            <input type="hidden" name="peminjaman_id" value="{{ $peminjaman->peminjaman_id ?? 1 }}">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
