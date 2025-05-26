@@ -182,10 +182,6 @@ class PeminjamanPengembalianController extends Controller
         $pengembalian = PengembalianRuangan::findOrFail($id);
         $pengembalian->status = $request->status;
 
-        if($request->status == 'disetujui') {
-            $pengembalian->ruangan->status = 'tidak_tersedia';
-        }
-
         if ($request->status === 'disetujui') {
             $pengembalian->tanggal_disetujui = now();
 
@@ -193,7 +189,7 @@ class PeminjamanPengembalianController extends Controller
             $peminjaman = $pengembalian->peminjaman;
             $peminjaman->status = 'selesai';
 
-            $pengembalian->ruangan->status = 'tersedia';
+            $peminjaman->ruangan->status = 'tersedia';
 
             $peminjaman->save();
         }
@@ -259,4 +255,12 @@ class PeminjamanPengembalianController extends Controller
 
         return response()->json(['bookings' => $bookings]);
     }
+    
+     public function showPengembalian(PengembalianRuangan $pengembalian)
+{
+    // Load relasi: ruangan & user dari peminjaman
+    $pengembalian->load(['peminjaman.ruangan', 'peminjaman.user']);
+
+    return view('admin.peminjaman-pengembalian.pengembalian.show', compact('pengembalian'));
+}
 }

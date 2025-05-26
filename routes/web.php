@@ -79,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/export', [PeminjamanPengembalianController::class, 'exportData'])->name('export');
         });
 
+        Route::get('/pengembalian/{pengembalian}', [PeminjamanPengembalianController::class, 'showPengembalian']);
+
     });
 
     // User Routes
@@ -102,14 +104,14 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // User Pengembalian Routes
-        Route::prefix('user/pengembalian')->name('user.pengembalian.')->group(function () {
-            Route::get('/', [UserPengembalianController::class, 'index'])->name('index');
+        Route::prefix('user/pengembalian')->name('user.pengembalian.')->middleware(['auth'])->group(function () {
+            Route::get('/', [UserPengembalianController::class, 'index'])->name('index'); // ini penting!
             Route::get('/create/{peminjamanId}', [UserPengembalianController::class, 'create'])->name('create');
             Route::post('/', [UserPengembalianController::class, 'store'])->name('store');
-            Route::get('/{id}', [UserPengembalianController::class, 'show'])->name('show');
+            Route::get('/{id}', [UserPengembalianController::class, 'show'])->where('pengembalian_id', '[0-9]+')->name('show');
         });
 
-        Route::prefix('user')->group(function() {
+        Route::prefix('user')->group(function () {
             Route::get('/ruangan', [RuanganUserController::class, 'index'])->name('user.ruangan.index');
             Route::get('/ruangan/{ruangan}', [RuanganUserController::class, 'show'])->name('user.ruangan.show');
         });

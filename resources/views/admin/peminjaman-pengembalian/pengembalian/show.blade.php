@@ -1,4 +1,4 @@
-<x-layout-user>
+<x-layout>
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <div class="flex items-center justify-between mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Detail Pengembalian</h1>
@@ -111,4 +111,4 @@
             </div>
         </div>
     </div>
-</x-layout-user>
+</x-layout>

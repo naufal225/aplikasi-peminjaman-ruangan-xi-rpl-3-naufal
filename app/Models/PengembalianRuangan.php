@@ -8,13 +8,17 @@ class PengembalianRuangan extends Model
 {
     protected $table = 'pengembalian_ruangan';
 
-    protected $guarded = 'pengembalian_id';
+    protected $guarded = ['pengembalian_id'];
 
-    public function peminjaman() {
-        return $this->belongsTo(PeminjamanRuangan::class, 'peminjaman_id');
+    protected $primaryKey = 'pengembalian_id';
+
+    public function peminjaman()
+    {
+        return $this->belongsTo(PeminjamanRuangan::class, 'peminjaman_id', 'peminjaman_id');
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 }

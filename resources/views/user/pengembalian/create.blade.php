@@ -55,26 +55,11 @@
             </div>
         </div>
 
-        <form action="{{ route('user.pengembalian.store') }}" method="POST">
+        <form action="/user/pengembalian" method="POST">
             @csrf
             <input type="hidden" name="peminjaman_id" value="{{ $peminjamanId ?? 1 }}">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="tanggal_kembali" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Pengembalian</label>
-                    <input type="date" name="tanggal_kembali" id="tanggal_kembali" value="{{ old('tanggal_kembali', date('Y-m-d')) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 bg-white text-gray-900 rounded-md" required>
-                    @error('tanggal_kembali')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="waktu_kembali" class="block text-sm font-medium text-gray-700 mb-2">Waktu Pengembalian</label>
-                    <input type="time" name="waktu_kembali" id="waktu_kembali" value="{{ old('waktu_kembali', date('H:i')) }}" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 bg-white text-gray-900 rounded-md" required>
-                    @error('waktu_kembali')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
 
                 <div class="md:col-span-2">
                     <label for="kondisi_ruangan" class="block text-sm font-medium text-gray-700 mb-2">Kondisi Ruangan</label>

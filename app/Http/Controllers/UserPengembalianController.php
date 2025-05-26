@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PengembalianRuangan;
 use App\Models\PeminjamanRuangan;
+use Carbon\Carbon;
 
 class UserPengembalianController extends Controller
 {
@@ -82,18 +83,11 @@ class UserPengembalianController extends Controller
     {
         $request->validate([
             'peminjaman_id' => 'required|exists:peminjaman_ruangan,peminjaman_id',
-            'tanggal_kembali' => 'required|date',
-            'waktu_kembali' => 'required',
             'kondisi_ruangan' => 'required|in:baik,rusak_ringan,rusak_berat',
             'catatan' => 'nullable|string|max:500',
         ], [
             'peminjaman_id.required' => 'ID peminjaman harus diisi.',
             'peminjaman_id.exists' => 'ID peminjaman tidak ditemukan dalam database.',
-
-            'tanggal_kembali.required' => 'Tanggal pengembalian harus diisi.',
-            'tanggal_kembali.date' => 'Format tanggal pengembalian tidak valid.',
-
-            'waktu_kembali.required' => 'Waktu pengembalian harus diisi.',
 
             'kondisi_ruangan.required' => 'Kondisi ruangan harus dipilih.',
             'kondisi_ruangan.in' => 'Kondisi ruangan harus salah satu dari: baik, rusak ringan, atau rusak berat.',
@@ -119,8 +113,8 @@ class UserPengembalianController extends Controller
 
         PengembalianRuangan::create([
             'peminjaman_id' => $request->peminjaman_id,
-            'tanggal_kembali' => $request->tanggal_kembali,
-            'waktu_kembali' => $request->waktu_kembali,
+            'user_id' => $user->user_id,
+            'tanggal_pengajuan' => Carbon::now(),
             'kondisi_ruangan' => $request->kondisi_ruangan,
             'catatan' => $request->catatan,
             'status' => 'belum_disetujui',

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('pengembalian_ruangan', function (Blueprint $table) {
             $table->id('pengembalian_id');
             $table->foreignId("peminjaman_id")->constrained('peminjaman_ruangan', 'peminjaman_id');
-            $table->foreignId('user_id')->constained('users');
+            $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->enum('kondisi_ruangan', ['baik','kotor','rusak_ringan','rusak_sedang','rusak_berat']);
             $table->enum('status', ['belum_disetujui', 'disetujui'])->default('belum_disetujui');
+            $table->text('catatan')->nullable();
             $table->dateTime('tanggal_pengajuan');
             $table->dateTime('tanggal_disetujui')->nullable();
             $table->timestamps();
