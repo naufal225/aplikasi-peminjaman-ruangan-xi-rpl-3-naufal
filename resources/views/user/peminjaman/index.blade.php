@@ -12,25 +12,83 @@
             </div>
         </div>
 
-        <!-- Tab Navigation -->
+        <!-- Tab Navigation with Horizontal Scroll -->
         <div class="border-b border-gray-200 mb-6">
-            <nav class="-mb-px flex space-x-6">
-                <a href="{{ route('user.peminjaman.index', ['status' => 'semua']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'semua' || !$status ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Semua Peminjaman
-                </a>
-                <a href="{{ route('user.peminjaman.index', ['status' => 'menunggu']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'menunggu' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Menunggu Persetujuan
-                </a>
-                <a href="{{ route('user.peminjaman.index', ['status' => 'disetujui']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'disetujui' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Disetujui
-                </a>
-                <a href="{{ route('user.peminjaman.index', ['status' => 'ditolak']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'ditolak' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Ditolak
-                </a>
-                <a href="{{ route('user.peminjaman.index', ['status' => 'selesai']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'selesai' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Selesai
-                </a>
-            </nav>
+            <div class="relative pb-4">
+                <!-- Scroll Left Button -->
+                <button id="scrollLeft" class="absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-white to-transparent flex items-center justify-center opacity-0 transition-opacity duration-200 hover:opacity-100 md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <!-- Scrollable Tab Container -->
+                <nav id="tabContainer" class="flex overflow-x-auto scrollbar-hide scroll-smooth -mb-px" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <div class="flex space-x-6 px-1 min-w-max">
+                        <a href="{{ route('user.peminjaman.index', ['status' => 'semua']) }}" 
+                           class="whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'semua' || !$status ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                                Semua
+                            </span>
+                        </a>
+                        
+                        <a href="{{ route('user.peminjaman.index', ['status' => 'menunggu']) }}" 
+                           class="whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'menunggu' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Menunggu
+                            </span>
+                        </a>
+                        
+                        <a href="{{ route('user.peminjaman.index', ['status' => 'disetujui']) }}" 
+                           class="whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'disetujui' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Disetujui
+                            </span>
+                        </a>
+                        
+                        <a href="{{ route('user.peminjaman.index', ['status' => 'ditolak']) }}" 
+                           class="whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'ditolak' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Ditolak
+                            </span>
+                        </a>
+                        
+                        <a href="{{ route('user.peminjaman.index', ['status' => 'selesai']) }}" 
+                           class="whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'selesai' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                            <span class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                Selesai
+                            </span>
+                        </a>
+                    </div>
+                </nav>
+
+                <!-- Scroll Right Button -->
+                <button id="scrollRight" class="absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-white to-transparent flex items-center justify-center opacity-0 transition-opacity duration-200 hover:opacity-100 md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <!-- Scroll Indicator Dots -->
+                <div id="scrollIndicator" class="flex justify-center mt-2 space-x-1 md:hidden">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+            </div>
         </div>
 
         <!-- Search -->
@@ -180,56 +238,225 @@
         </div>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-    function confirmCancel(id) {
-        Swal.fire({
-            title: 'Batalkan Peminjaman?',
-            text: "Tindakan ini tidak bisa dibatalkan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, batalkan',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                fetch(`/user/peminjaman/${id}/cancel`, {
-                    method: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Gagal membatalkan peminjaman.');
+        // Tab Scroll Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabContainer = document.getElementById('tabContainer');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+            const scrollIndicator = document.getElementById('scrollIndicator');
+
+            if (!tabContainer || !scrollLeftBtn || !scrollRightBtn) return;
+
+            let isScrolling = false;
+
+            // Check if scrolling is needed
+            function checkScrollButtons() {
+                const { scrollLeft, scrollWidth, clientWidth } = tabContainer;
+                
+                // Show/hide scroll buttons based on scroll position
+                if (scrollLeft > 0) {
+                    scrollLeftBtn.style.opacity = '1';
+                } else {
+                    scrollLeftBtn.style.opacity = '0';
+                }
+
+                if (scrollLeft < scrollWidth - clientWidth - 1) {
+                    scrollRightBtn.style.opacity = '1';
+                } else {
+                    scrollRightBtn.style.opacity = '0';
+                }
+
+                // Update scroll indicator
+                updateScrollIndicator();
+            }
+
+            // Create scroll indicator dots
+            function createScrollIndicator() {
+                if (window.innerWidth >= 768) return; // Only show on mobile
+
+                const tabWidth = tabContainer.scrollWidth;
+                const containerWidth = tabContainer.clientWidth;
+                
+                if (tabWidth <= containerWidth) {
+                    scrollIndicator.innerHTML = '';
+                    return;
+                }
+
+                const dotsCount = Math.ceil(tabWidth / containerWidth);
+                scrollIndicator.innerHTML = '';
+
+                for (let i = 0; i < dotsCount; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'w-2 h-2 rounded-full bg-gray-300 transition-colors duration-200';
+                    scrollIndicator.appendChild(dot);
+                }
+            }
+
+            // Update scroll indicator
+            function updateScrollIndicator() {
+                const dots = scrollIndicator.querySelectorAll('div');
+                if (dots.length === 0) return;
+
+                const { scrollLeft, scrollWidth, clientWidth } = tabContainer;
+                const scrollPercentage = scrollLeft / (scrollWidth - clientWidth);
+                const activeDotIndex = Math.round(scrollPercentage * (dots.length - 1));
+
+                dots.forEach((dot, index) => {
+                    if (index === activeDotIndex) {
+                        dot.className = 'w-2 h-2 rounded-full bg-blue-500 transition-colors duration-200';
+                    } else {
+                        dot.className = 'w-2 h-2 rounded-full bg-gray-300 transition-colors duration-200';
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    Swal.fire({
-                        title: 'Dibatalkan!',
-                        text: 'Peminjaman berhasil dibatalkan.',
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.reload();
-                    });
-                })
-                .catch(error => {
-                    Swal.fire('Gagal', error.message, 'error');
                 });
             }
-        });
-    }
-</script>
 
-    <script>
+            // Smooth scroll function
+            function smoothScroll(element, target, duration = 300) {
+                const start = element.scrollLeft;
+                const change = target - start;
+                const startTime = performance.now();
+
+                function animateScroll(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function (ease-out)
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    
+                    element.scrollLeft = start + (change * easeOut);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animateScroll);
+                    } else {
+                        isScrolling = false;
+                    }
+                }
+
+                isScrolling = true;
+                requestAnimationFrame(animateScroll);
+            }
+
+            // Scroll left button
+            scrollLeftBtn.addEventListener('click', function() {
+                if (isScrolling) return;
+                const scrollAmount = tabContainer.clientWidth * 0.8;
+                const targetScroll = Math.max(0, tabContainer.scrollLeft - scrollAmount);
+                smoothScroll(tabContainer, targetScroll);
+            });
+
+            // Scroll right button
+            scrollRightBtn.addEventListener('click', function() {
+                if (isScrolling) return;
+                const scrollAmount = tabContainer.clientWidth * 0.8;
+                const maxScroll = tabContainer.scrollWidth - tabContainer.clientWidth;
+                const targetScroll = Math.min(maxScroll, tabContainer.scrollLeft + scrollAmount);
+                smoothScroll(tabContainer, targetScroll);
+            });
+
+            // Listen to scroll events
+            tabContainer.addEventListener('scroll', checkScrollButtons);
+
+            // Touch/swipe support for mobile
+            let startX = 0;
+            let scrollStart = 0;
+
+            tabContainer.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].pageX;
+                scrollStart = tabContainer.scrollLeft;
+            });
+
+            tabContainer.addEventListener('touchmove', function(e) {
+                if (!startX) return;
+                
+                const currentX = e.touches[0].pageX;
+                const diffX = startX - currentX;
+                tabContainer.scrollLeft = scrollStart + diffX;
+                
+                e.preventDefault(); // Prevent page scroll
+            });
+
+            tabContainer.addEventListener('touchend', function() {
+                startX = 0;
+                scrollStart = 0;
+            });
+
+            // Initialize on load and resize
+            function initialize() {
+                createScrollIndicator();
+                checkScrollButtons();
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                setTimeout(initialize, 100);
+            });
+
+            // Initialize
+            initialize();
+
+            // Auto-scroll to active tab on page load
+            const activeTab = tabContainer.querySelector('.border-blue-500');
+            if (activeTab) {
+                setTimeout(() => {
+                    const tabRect = activeTab.getBoundingClientRect();
+                    const containerRect = tabContainer.getBoundingClientRect();
+                    
+                    if (tabRect.left < containerRect.left || tabRect.right > containerRect.right) {
+                        const scrollTarget = activeTab.offsetLeft - (tabContainer.clientWidth / 2) + (activeTab.clientWidth / 2);
+                        smoothScroll(tabContainer, Math.max(0, scrollTarget));
+                    }
+                }, 100);
+            }
+        });
+
+        // Cancel confirmation function
+        function confirmCancel(id) {
+            Swal.fire({
+                title: 'Batalkan Peminjaman?',
+                text: "Tindakan ini tidak bisa dibatalkan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, batalkan',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/user/peminjaman/${id}/cancel`, {
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Gagal membatalkan peminjaman.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        Swal.fire({
+                            title: 'Dibatalkan!',
+                            text: 'Peminjaman berhasil dibatalkan.',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    })
+                    .catch(error => {
+                        Swal.fire('Gagal', error.message, 'error');
+                    });
+                }
+            });
+        }
+
         // Live search functionality
         const searchInput = document.getElementById('searchInput');
         let searchTimer;
@@ -256,4 +483,29 @@
             }, 5000);
         }
     </script>
+
+    <style>
+        /* Hide scrollbar for tab container */
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
+        }
+
+        /* Smooth scroll behavior */
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom gradient for scroll buttons */
+        #scrollLeft {
+            background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 100%);
+        }
+        
+        #scrollRight {
+            background: linear-gradient(to left, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 100%);
+        }
+    </style>
 </x-layout-user>

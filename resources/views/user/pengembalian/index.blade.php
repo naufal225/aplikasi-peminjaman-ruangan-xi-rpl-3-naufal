@@ -4,19 +4,53 @@
             <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Pengembalian Ruangan</h1>
         </div>
 
-        <!-- Tab Navigation -->
+        <!-- Enhanced Tab Navigation with Horizontal Scroll -->
         <div class="border-b border-gray-200 mb-6">
-            <nav class="-mb-px flex space-x-6">
-                <a href="{{ route('user.pengembalian.index', ['status' => 'semua']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'semua' || !$status ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Semua Pengembalian
-                </a>
-                <a href="{{ route('user.pengembalian.index', ['status' => 'belum_disetujui']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'belum_disetujui' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Belum Disetujui
-                </a>
-                <a href="{{ route('user.pengembalian.index', ['status' => 'disetujui']) }}" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ $status === 'disetujui' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                    Disetujui
-                </a>
-            </nav>
+            <div class="relative pb-4">
+                <!-- Scroll Left Button -->
+                <button id="scrollLeft" class="absolute left-0 top-0 z-10 h-full w-8 bg-gradient-to-r from-white to-transparent flex items-center justify-center opacity-0 transition-opacity duration-300 md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <!-- Scroll Right Button -->
+                <button id="scrollRight" class="absolute right-0 top-0 z-10 h-full w-8 bg-gradient-to-l from-white to-transparent flex items-center justify-center opacity-0 transition-opacity duration-300 md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+
+                <!-- Scrollable Tab Container -->
+                <nav id="tabContainer" class="-mb-px flex overflow-x-auto scrollbar-hide scroll-smooth" style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <a href="{{ route('user.pengembalian.index', ['status' => 'semua']) }}" 
+                       class="flex items-center whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'semua' || !$status ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        Semua Pengembalian
+                    </a>
+                    <a href="{{ route('user.pengembalian.index', ['status' => 'belum_disetujui']) }}" 
+                       class="flex items-center whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'belum_disetujui' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Belum Disetujui
+                    </a>
+                    <a href="{{ route('user.pengembalian.index', ['status' => 'disetujui']) }}" 
+                       class="flex items-center whitespace-nowrap py-4 px-4 border-b-2 font-medium text-sm transition-colors duration-200 {{ $status === 'disetujui' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Disetujui
+                    </a>
+                </nav>
+
+                <!-- Scroll Indicators (dots) -->
+                <div id="scrollIndicators" class="flex justify-center mt-2 space-x-1 md:hidden">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+            </div>
         </div>
 
         <!-- Search -->
@@ -211,7 +245,185 @@
         </div>
     </div>
 
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        /* Smooth scroll behavior */
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+        
+        /* Scroll indicator dots */
+        .scroll-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            transition: background-color 0.3s ease;
+        }
+        
+        .scroll-dot.active {
+            background-color: #3b82f6;
+        }
+    </style>
+
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabContainer = document.getElementById('tabContainer');
+            const scrollLeftBtn = document.getElementById('scrollLeft');
+            const scrollRightBtn = document.getElementById('scrollRight');
+            const indicatorsContainer = document.getElementById('scrollIndicators');
+            
+            let isScrolling = false;
+            let startX = 0;
+            let scrollLeft = 0;
+
+            // Check if scrolling is needed
+            function checkScrollButtons() {
+                if (window.innerWidth >= 768) { // md breakpoint
+                    scrollLeftBtn.style.opacity = '0';
+                    scrollRightBtn.style.opacity = '0';
+                    return;
+                }
+
+                const canScrollLeft = tabContainer.scrollLeft > 0;
+                const canScrollRight = tabContainer.scrollLeft < (tabContainer.scrollWidth - tabContainer.clientWidth);
+                
+                scrollLeftBtn.style.opacity = canScrollLeft ? '1' : '0';
+                scrollRightBtn.style.opacity = canScrollRight ? '1' : '0';
+                
+                updateScrollIndicators();
+            }
+
+            // Create scroll indicators
+            function createScrollIndicators() {
+                if (window.innerWidth >= 768) return;
+                
+                const tabs = tabContainer.children;
+                const totalTabs = tabs.length;
+                const visibleTabs = Math.floor(tabContainer.clientWidth / tabs[0].offsetWidth);
+                const totalDots = Math.max(1, totalTabs - visibleTabs + 1);
+                
+                indicatorsContainer.innerHTML = '';
+                
+                for (let i = 0; i < totalDots; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'scroll-dot';
+                    indicatorsContainer.appendChild(dot);
+                }
+                
+                updateScrollIndicators();
+            }
+
+            // Update scroll indicators
+            function updateScrollIndicators() {
+                if (window.innerWidth >= 768) return;
+                
+                const dots = indicatorsContainer.children;
+                if (dots.length === 0) return;
+                
+                const scrollPercentage = tabContainer.scrollLeft / (tabContainer.scrollWidth - tabContainer.clientWidth);
+                const activeDotIndex = Math.round(scrollPercentage * (dots.length - 1));
+                
+                Array.from(dots).forEach((dot, index) => {
+                    dot.classList.toggle('active', index === activeDotIndex);
+                });
+            }
+
+            // Scroll functions
+            function scrollTabsLeft() {
+                const scrollAmount = tabContainer.clientWidth * 0.8;
+                tabContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            }
+
+            function scrollTabsRight() {
+                const scrollAmount = tabContainer.clientWidth * 0.8;
+                tabContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+
+            // Event listeners
+            scrollLeftBtn.addEventListener('click', scrollTabsLeft);
+            scrollRightBtn.addEventListener('click', scrollTabsRight);
+            
+            tabContainer.addEventListener('scroll', checkScrollButtons);
+            window.addEventListener('resize', () => {
+                checkScrollButtons();
+                createScrollIndicators();
+            });
+
+            // Touch/swipe support
+            tabContainer.addEventListener('touchstart', (e) => {
+                isScrolling = true;
+                startX = e.touches[0].pageX - tabContainer.offsetLeft;
+                scrollLeft = tabContainer.scrollLeft;
+            });
+
+            tabContainer.addEventListener('touchmove', (e) => {
+                if (!isScrolling) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - tabContainer.offsetLeft;
+                const walk = (x - startX) * 2;
+                tabContainer.scrollLeft = scrollLeft - walk;
+            });
+
+            tabContainer.addEventListener('touchend', () => {
+                isScrolling = false;
+            });
+
+            // Mouse drag support (optional)
+            tabContainer.addEventListener('mousedown', (e) => {
+                isScrolling = true;
+                startX = e.pageX - tabContainer.offsetLeft;
+                scrollLeft = tabContainer.scrollLeft;
+                tabContainer.style.cursor = 'grabbing';
+            });
+
+            tabContainer.addEventListener('mousemove', (e) => {
+                if (!isScrolling) return;
+                e.preventDefault();
+                const x = e.pageX - tabContainer.offsetLeft;
+                const walk = (x - startX) * 2;
+                tabContainer.scrollLeft = scrollLeft - walk;
+            });
+
+            tabContainer.addEventListener('mouseup', () => {
+                isScrolling = false;
+                tabContainer.style.cursor = 'grab';
+            });
+
+            tabContainer.addEventListener('mouseleave', () => {
+                isScrolling = false;
+                tabContainer.style.cursor = 'grab';
+            });
+
+            // Auto-scroll to active tab
+            function scrollToActiveTab() {
+                const activeTab = tabContainer.querySelector('.border-blue-500');
+                if (activeTab) {
+                    const containerRect = tabContainer.getBoundingClientRect();
+                    const tabRect = activeTab.getBoundingClientRect();
+                    
+                    if (tabRect.left < containerRect.left || tabRect.right > containerRect.right) {
+                        const scrollPosition = activeTab.offsetLeft - (tabContainer.clientWidth / 2) + (activeTab.clientWidth / 2);
+                        tabContainer.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                    }
+                }
+            }
+
+            // Initialize
+            checkScrollButtons();
+            createScrollIndicators();
+            scrollToActiveTab();
+        });
+
         // Live search functionality
         const searchInput = document.getElementById('searchInput');
         let searchTimer;

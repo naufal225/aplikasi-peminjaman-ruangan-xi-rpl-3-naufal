@@ -34,7 +34,7 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
                 ->map(function ($item) {
                     return [
                         'Tipe' => 'Peminjaman',
-                         'Nama User' => $item->user->nama_lengkap,
+                        'Nama User' => $item->user->nama_lengkap,
                         'ID Card' => $item->user->id_card,
                         'Ruangan' => $item->ruangan->nama_ruangan ?? '-',
                         'Tanggal' => $item->tanggal,
@@ -44,9 +44,7 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
                         'Keperluan' => $item->keperluan,
                         'Status' => $item->status,
                         'Kondisi Ruangan' => '-', // Placeholder biar kolom tetap sinkron
-                        'Tanggal Pengajuan' => '-',
-                        'Tanggal Disetujui' => '-',
-                        'Tanggal Buat' => $item->created_at
+                        'Tanggal Pengajuan' => $item->created_at
                     ];
                 });
 
@@ -70,9 +68,7 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
                         'Keperluan' => $item->peminjaman->keperluan ?? '-',
                         'Status' => $item->status,
                         'Kondisi Ruangan' => $item->kondisi_ruangan,
-                        'Tanggal Pengajuan' => $item->tanggal_pengajuan,
-                        'Tanggal Disetujui' => $item->tanggal_disetujui,
-                        'Tanggal Buat' => $item->created_at
+                        'Tanggal Pengajuan' => $item->created_at
                     ];
                 });
 
@@ -85,19 +81,31 @@ class PeminjamanPengembalianExport implements FromCollection, WithHeadings, With
     public function headings(): array
     {
         return [
-            'Tipe', 'Nama User', 'ID Card', 'Ruangan', 'Tanggal', 'Waktu Mulai',
-            'Durasi (JP)', 'Waktu Selesai', 'Keperluan', 'Status',
-            'Kondisi Ruangan', 'Tanggal Pengajuan', 'Tanggal Disetujui', 'Tanggal Buat'
+            'Tipe',
+            'Nama User',
+            'ID Card',
+            'Ruangan',
+            'Tanggal',
+            'Waktu Mulai',
+            'Durasi (JP)',
+            'Waktu Selesai',
+            'Keperluan',
+            'Status',
+            'Kondisi Ruangan',
+            'Tanggal Pengajuan',
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
         return [
-            1 => ['font' => ['bold' => true], 'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => 'BDD7EE'] // Biru muda untuk header
-            ]],
+            1 => [
+                'font' => ['bold' => true],
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => 'BDD7EE'] // Biru muda untuk header
+                ]
+            ],
         ];
     }
 }
